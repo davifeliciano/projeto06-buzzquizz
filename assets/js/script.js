@@ -38,4 +38,16 @@ function getQuizzes () {
     request.catch(error => `Unable to retrive quizzes from server, please try again later. Error: ${error.status}`);
 }
 
+function oneQuizz (this) {
+
+    const quizz = document.querySelector(this);
+
+    const idQuizz = quizz.getAttribute(id);
+
+    const request = axios.get(`https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes/${idQuizz}`);
+
+    request.then();
+    request.catch();
+}
+
 getQuizzes()
