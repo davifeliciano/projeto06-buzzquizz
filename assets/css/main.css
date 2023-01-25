@@ -27,7 +27,7 @@ h1 {
 	font-size: 37px;
 	font-weight: 700;
 	color: #ffffff;
-
+	cursor: pointer;
 }
 
 .lista-quizzes{
@@ -64,6 +64,7 @@ h1 {
 	font-size: 30px;
 	color: #EC362D;
 	margin-left: 6px;
+	cursor: pointer;
 }
 
 .titulo-meus-quizzes {
@@ -97,6 +98,7 @@ h2 {
 	font-size: 21px;
 	font-weight: 400;
 	text-align: center;
+	cursor: pointer;
 }
 
 h3 {
@@ -351,10 +353,16 @@ h3 {
 
 	.reiniciar-left{
 		width: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
 	.reiniciar-rigth {
 		width: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
 	.reiniciar-rigth h3 {
