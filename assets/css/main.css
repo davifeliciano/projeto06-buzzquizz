@@ -363,6 +363,11 @@ h3 {
 	padding-block: 132px;
 }
 
+.novo-quiz .quizz-individual-container {
+	width: 100%;
+	padding-inline: 20px;
+}
+
 .btn-prosseguir {
 	height: 54px;
 	padding-inline: 50px;
@@ -372,6 +377,13 @@ h3 {
 	border-radius: 15px;
 	color: white;
 	filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.05));
+}
+
+.btn-home {
+	height: 54px;
+	background: none;
+	border: none;
+	color: #818181;
 }
 
 .form-card {
@@ -436,6 +448,11 @@ h3 {
 @media (min-width: 600px) {
 	.form-card {
 		width: 600px;
+	}
+
+	.novo-quiz .quizz-individual-container {
+		padding: 0;
+		width: 500px;
 	}
 }
 
