@@ -126,6 +126,21 @@ function validaInfoBase() {
     return true;
 }
 
+function unfoldFormCard() {
+    /* Função chamada ao clicar no botão de editar em um card de pergunta ou
+    nível colapsado. A função descolapsa o card em questão, e colapsa todos os demais */
+    this.closest('main')
+        .querySelectorAll('.form-card')
+        .forEach((formCard) => {
+            formCard.classList.add('fold');
+        })
+
+    const formCard = this.closest('.form-card');
+    formCard.classList.remove('fold');
+    // Scrollar até o topo do card em questão ficar visivel
+    window.scrollTo(0, formCard.offsetTop - 75);
+}
+
 function irParaPerguntas() {
 
     if (!validaInfoBase()) {
@@ -202,6 +217,13 @@ function irParaPerguntas() {
 
     telaDeNiveis.innerHTML += '<button class="btn-prosseguir">Finalizar Quizz</button>';
 
+    // Chamando unfoldFormCard nos clicks nos botões .btn-fold
+    const foldBtns = document.querySelectorAll(".btn-fold");
+    foldBtns.forEach((btn) => {
+        btn.addEventListener("click", unfoldFormCard)
+    });
+
+    // Removendo classe fold dos primeiros form-cards de cada tela
     document.querySelectorAll(":is(#perguntas, #niveis) .form-card:first-of-type")
         .forEach((elem) => elem.classList.remove("fold"));
 
