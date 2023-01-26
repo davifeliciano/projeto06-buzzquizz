@@ -103,12 +103,13 @@ getQuizzes()
               <h3>${infoQuizz.questions[questions].answers[answers].text}</h3>
         </div>`;
       }
-      questionN = `<div data-question="${questions}" class="pag-quizz-ind-titulo" style="color:${infoQuizz.questions.color}">
+      questionN += `<div data-question="${questions}" class="pag-quizz-ind-titulo" style="color:${infoQuizz.questions.color}">
             <h2>${infoQuizz.questions[questions].title}</h2>
-          </div>`;
+          </div>` + answerN;
 
+        wholeN += questionN;
     }
-        
+      containerQuizz.innerHTML = wholeN;
 }*/
 
 function validaInfoBase() {
