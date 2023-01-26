@@ -18,7 +18,7 @@ const btnQuizzIndividual= (idSelecao) => {
 
 	const id = idSelecao.getAttribute('data-id');
 	console.log(id);
-    renderQuizz();
+    oneQuizz();
 }
 
 const btnCriarQuizz = (idSelecao) => {
@@ -57,19 +57,15 @@ function getQuizzes () {
         }
         
     });
-    request.catch(error => `Unable to retrive quizzes from server, please try again later. Error: ${error.status}`);
+    request.catch(error => console.log(`Unable to retrive quizzes from server, please try again later. Error: ${error.status}`));
 }
 
-function oneQuizz () {
+function oneQuizz (id) {
 
-    const quizz = document.querySelector(this);
+    const request = axios.get(`https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes/${id}`);
 
-    const idQuizz = quizz.getAttribute('data-id');
-
-    const request = axios.get(`https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes/${idQuizz}`);
-
-    request.then();
-    request.catch();
+    request.then(renderQuizz);
+    request.catch(error => console.log(`Unable to retrive quizzes from server, please try again later. Error: ${error.status}`));
 }
 
 getQuizzes()
@@ -102,14 +98,19 @@ getQuizzes()
               <img alt="${infoQuizz.questions[questions].answers[answers].text}" src="${infoQuizz.questions[questions].answers[answers].image}">
               <h3>${infoQuizz.questions[questions].answers[answers].text}</h3>
         </div>`;
+        answerBlock.innerHTML = answerN;
       }
-      questionN += `<div data-question="${questions}" class="pag-quizz-ind-titulo" style="color:${infoQuizz.questions.color}">
+      questionN += `<div data-question="${questions+1}" class="pag-quizz-ind-titulo" style="color:${infoQuizz.questions.color}">
             <h2>${infoQuizz.questions[questions].title}</h2>
           </div>` + answerN;
 
+        questionBlock.innerHTML = questionN;
+
         wholeN += questionN;
     }
-      containerQuizz.innerHTML = wholeN;
+
+    containerQuizz.innerHTML = banner + wholeN;
+      
 }*/
 
 function validaInfoBase() {
