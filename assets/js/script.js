@@ -19,26 +19,32 @@ function getQuizzes () {
 
     request.then(quizzes => {
         console.log(quizzes.data)
-        console.log(quizzes.data[0].questions)
+        console.log(quizzes.data[0].id)
         
         const exibirQuizzes = document.querySelector('.area-todos-quizzes');
         console.log(quizzes.data.length);
-        exibirQuizzes.innerHTML = "";
+        //exibirQuizzes.innerHTML = "";
 
         for (let i = 0; i < quizzes.data.length; i++){
             exibirQuizzes.innerHTML = exibirQuizzes.innerHTML +`
-            <div onclick="AAAAAAA()" class="quizz-individual">
-              <img alt="Imagem Quizz 2" src="${quizzes.data[i].image}">
+            <div data-id="${quizzes.data[i].id}" onclick="funcaozinha(this)" class="quizz-individual">
+							<div class="background-individual"></div>
+              <img alt="Imagem de ${quizzes.data[i].title}" src="${quizzes.data[i].image}">
               <p>${quizzes.data[i].title}</p>
             </div>
-            `
+            `;
         }
         
     });
     request.catch(error => `Unable to retrive quizzes from server, please try again later. Error: ${error.status}`);
 }
 
-function oneQuizz (this) {
+/*function funcaozinha(idSelecao){
+	const id = idSelecao.getAttribute('data-id');
+	console.log(id);
+}*/
+
+function oneQuizz () {
 
     const quizz = document.querySelector(this);
 
