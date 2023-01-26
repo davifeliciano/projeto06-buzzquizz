@@ -347,6 +347,7 @@ h3 {
 	.banner-sup img{
 		height: 142px;
 		width: 100%;
+		object-fit: cover;
 	}
 
 	.banner-sup h2 {
@@ -439,6 +440,7 @@ h3 {
 }
 
 .form-card-header button {
+	display: none;
 	padding: 0;
 	background: none;
 	border: none;
@@ -470,6 +472,9 @@ h3 {
 }
 
 /* A classe fold colapsa o form card, mantendo só seu header visível */
+.form-card.fold .btn-fold {
+	display: block;
+}
 .form-card.fold .form-grupo {
 	display: none;
 }
