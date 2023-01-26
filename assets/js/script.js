@@ -5,6 +5,8 @@ const newQuizz = {
     levels: []
 }
 
+let myQuizzes;
+
 function esconderTodas() {
     const mains = document.querySelectorAll('main');
     mains.forEach((elem) => elem.classList.add('esconder'));
@@ -35,6 +37,7 @@ const btnHome = () => {
     window.scrollTo(0, 0);
 }
 
+// Listagem dos Quizzes - gerais e do usuário
 function getQuizzes () {
 
     const request = axios.get('https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes');
@@ -44,7 +47,6 @@ function getQuizzes () {
         console.log(quizzes.data[0].id)
         
         const exibirQuizzes = document.querySelector('.area-todos-quizzes');
-        console.log(quizzes.data.length);
 
         for (let i = 0; i < quizzes.data.length; i++){
             exibirQuizzes.innerHTML += `
@@ -358,3 +360,33 @@ window.onload = () => {
         localStorage.setItem('quizzes', JSON.stringify([]));
     }
 }
+
+
+// Exibir quizzes do usuario
+function getQuizzesUser () {
+
+  myQuizzes = JSON.parse(localStorage.getItem('quizzes'));
+  console.log(myQuizzes.length);
+
+  if(myQuizzes.length !== 0){
+    document.querySelector('.cria-quizz').classList.add('esconder');
+    document.querySelector('.meus-quizzes').classList.remove('esconder');
+  } else {
+    document.querySelector('.cria-quizz').classList.remove('esconder');
+    document.querySelector('.meus-quizzes').classList.add('esconder');
+  }
+  
+  const meusQuizzesIndividual = document.querySelector('.area-todos-quizzes-ind');
+  console.log(meusQuizzesIndividual);
+
+  for (let i = 0; i < myQuizzes.length; i++){
+    meusQuizzesIndividual.innerHTML += `
+    <div class="quizz-individual" data-id="${myQuizzes[i].id}" onclick="btnQuizzIndividual(this)" >
+      <div class="background-individual"></div>
+      <img alt="Imagem de ${myQuizzes[i].title}" src="${myQuizzes[i].image}">
+      <p>${myQuizzes[i].title}</p>
+    </div>
+    `;
+  }
+  }
+  getQuizzesUser();

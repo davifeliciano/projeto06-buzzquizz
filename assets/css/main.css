@@ -203,6 +203,9 @@ h3 {
 
 .banner-sup img{
 	height: 227px;
+	width: 100%;
+	object-fit: cover;
+
 }
 
 .pagina-quizz-individual {
@@ -382,6 +385,11 @@ h3 {
 		font-size: 17px;
 		line-height: 19px;
 	}
+
+	.background-individual {
+		width: 100%;
+		}
+
 }
 /* Seção de novo quiz */
 
