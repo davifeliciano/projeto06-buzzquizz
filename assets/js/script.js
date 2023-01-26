@@ -69,7 +69,7 @@ function oneQuizz (id) {
 }
 
 function renderQuizz (infoQuizz) {
-  // elementos HTML:
+    const quizzID = infoQuizz.data.id;
 
     const container = document.querySelector('.pagina-quizz .container');
 
@@ -84,10 +84,10 @@ function renderQuizz (infoQuizz) {
 
     for (let i = 0; i < infoQuizz.data.questions.length; i++){
 
-        let conteudoRepostas = [];
+        let conteudoRespostas = [];
 
         for(let j = 0; j < infoQuizz.data.questions[i].answers.length; j++){
-            conteudoRepostas.push(`<div class="opcao-individual">
+            conteudoRespostas.push(`<div onclick="trataResposta()" data-correct="${infoQuizz.data.questions[i].answers[j].isCorrectAnswer}" class="opcao-individual">
             <img alt="${infoQuizz.data.questions[i].answers[j].text}" src="${infoQuizz.data.questions[i].answers[j].image}">
             <h3>${infoQuizz.data.questions[i].answers[j].text}</h3>
             </div>`)
@@ -99,12 +99,19 @@ function renderQuizz (infoQuizz) {
               <h2>${infoQuizz.data.questions[i].title}</h2>
             </div>
             <div class="pag-quizz-ind-opcoes">
-              ${conteudoRepostas.sort(() => Math.random() - 0.5).join(" ")}
+              ${conteudoRespostas.sort(() => Math.random() - 0.5).join(" ")}
             </div>
           </div>
         `
         }
+
+        container.id = quizzID;
     }
+
+function trataResposta () {
+    
+}
+
 
 function validaInputs(inputs) {
     /* Dada uma lista de inputs, retorna true se validas. Do
