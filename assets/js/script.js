@@ -130,7 +130,8 @@ function unfoldFormCard() {
 }
 
 function irParaPerguntas() {
-
+    /* Checa as informações basicas em #info-base. Se forem validas,
+    popula novoQuiz, #perguntas e #niveis e exibe #perguntas */
     const telaDeInfoBase = document.querySelector('#info-base');
     const inputs = telaDeInfoBase.querySelectorAll("input");
 
@@ -205,7 +206,7 @@ function irParaPerguntas() {
           </div>`
     }
 
-    telaDeNiveis.innerHTML += '<button class="btn-prosseguir">Finalizar Quizz</button>';
+    telaDeNiveis.innerHTML += '<button class="btn-prosseguir" onclick="enviarQuizz();">Finalizar Quizz</button>';
 
     // Chamando unfoldFormCard nos clicks nos botões .btn-fold
     const foldBtns = document.querySelectorAll(".btn-fold");
@@ -222,7 +223,8 @@ function irParaPerguntas() {
 }
 
 function irParaNiveis() {
-
+    /* Checa as perguntas em #perguntas. Se forem validas,
+    popula novoQuiz e exibe #niveis */
     const telaDePerguntas = document.querySelector("#perguntas");
     const inputs = telaDePerguntas.querySelectorAll("input");
 
@@ -272,4 +274,79 @@ function irParaNiveis() {
     const telaDeNiveis = document.querySelector('#niveis');
     esconderTodas();
     telaDeNiveis.classList.remove("esconder");
+}
+
+function enviarQuizz() {
+    /* Checa os niveis em #niveis. Se forem validas, realiza o
+    post na API, guarda novoQuizz no localStorage e exibe #fim-novo-quizz */
+    const telaDeNiveis = document.querySelector("#niveis");
+    const inputs = telaDeNiveis.querySelectorAll("input");
+    const percentMinInputs = telaDeNiveis.querySelectorAll(".acerto-min-nivel");
+    const zeroPercentIndex = Array.from(percentMinInputs)
+        .map(input => input.value)
+        .indexOf("0");
+
+    if (!validaInputs(inputs) || zeroPercentIndex === -1) {
+        alert('Valor inválido! O título dos níveis deve ter no mínimo 10 caracteres, a descrição deve ter no mínimo 30 caractéres, o formato de URL deve ser válido e ao menos um nível deve ter percentual de acerto mínimo nulo.');
+        return null;
+    }
+
+    const formCards = telaDeNiveis.querySelectorAll('.form-card');
+
+    for (const formCard of formCards) {
+
+        const nivel = {
+            title: '',
+            image: '',
+            text: '',
+            minValue: 0
+        }
+
+        const [titleInput, minValueInput, imageInput, descInput] =
+            formCard.querySelectorAll('input');
+
+        nivel.title = titleInput.value.trim();
+        nivel.image = imageInput.value.trim();
+        nivel.text = descInput.value.trim();
+        nivel.minValue = parseInt(minValueInput.value);
+
+        newQuizz.levels.push(nivel);
+    }
+
+    // Postando o Quizz na API
+    const url = 'https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes';
+
+    return axios.post(url, newQuizz)
+        .then((response) => {
+            const quizzes = JSON.parse(localStorage.getItem('quizzes'));
+            quizzes.push(response.data);
+            const quizzesStr = JSON.stringify(quizzes);
+            localStorage.setItem('quizzes', quizzesStr);
+
+            // Em caso de sucesso, popula e mostra #fim-novo-quiz
+            const telaFinal = document.querySelector('#fim-novo-quizz');
+            telaFinal.innerHTML += `
+              <div class="quizz-individual-container">
+                <div class="quizz-individual">
+                  <img src="${newQuizz.image}" alt="Imagem Quizz ${response.data.id}">
+                  <p>${newQuizz.title}</p>
+                </div>
+              </div>
+              <button class="btn-prosseguir">Acessar Quiz</button>
+              <button class="btn-home" onclick="window.location.reload();">Voltar para home</button>
+            `;
+
+            esconderTodas();
+            telaFinal.classList.remove("esconder");
+        })
+        .catch((error) => {
+            console.log(error);
+            alert('Unable to post quizzes to server, please try again later.');
+        });
+}
+
+window.onload = () => {
+    if (localStorage.getItem('quizzes') === null) {
+        localStorage.setItem('quizzes', JSON.stringify([]));
+    }
 }
