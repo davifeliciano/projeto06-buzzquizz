@@ -26,7 +26,7 @@ function getQuizzes () {
         //exibirQuizzes.innerHTML = "";
 
         for (let i = 0; i < quizzes.data.length; i++){
-            exibirQuizzes.innerHTML = exibirQuizzes.innerHTML +`
+            exibirQuizzes.innerHTML += `
             <div data-id="${quizzes.data[i].id}" onclick="funcaozinha(this)" class="quizz-individual">
 							<div class="background-individual"></div>
               <img alt="Imagem de ${quizzes.data[i].title}" src="${quizzes.data[i].image}">
@@ -42,13 +42,14 @@ function getQuizzes () {
 /*function funcaozinha(idSelecao){
 	const id = idSelecao.getAttribute('data-id');
 	console.log(id);
+    renderQuizz();
 }*/
 
 function oneQuizz () {
 
     const quizz = document.querySelector(this);
 
-    const idQuizz = quizz.getAttribute(id);
+    const idQuizz = quizz.getAttribute('data-id');
 
     const request = axios.get(`https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes/${idQuizz}`);
 
@@ -57,3 +58,29 @@ function oneQuizz () {
 }
 
 getQuizzes()
+
+/*function renderQuizz (this) {
+
+    const paginaQuizz = document.querySelector('.pagina-quizz');
+
+    paginaQuizz.classList.remove('escondido');
+
+    const containerQuizz = document.querySelector('.pagina-quizz .container');
+
+    let questionBlocks;
+
+    for(let i = 0; i < ; i++){
+        questionBlocks += `<div class="pag-quizz-ind-opcoes">
+            <div class="opcao-individual selecionado-h3">
+              <img alt="Opção do Quizz" src="assets/img/img1.png">
+              <h3>Gatíneo</h3>
+            </div>`
+    }
+
+    containerQuizz.innerHTML = `<div class="banner-sup">
+          <img alt="Banner superior" src="assets/img/image-sup1.png">
+          <h2>O quão Potterhead é você?</h2>
+        </div>` + `<div class="pag-quizz-ind-titulo cor-azul">
+            <h2>Em qual animal Olho-Tonto Moody transfigurou Malfoy?</h2>
+          </div>` + questionBlocks;
+}*/
