@@ -8,6 +8,7 @@ const newQuizz = {
 function esconderTodas() {
     const mains = document.querySelectorAll('main');
     mains.forEach((elem) => elem.classList.add('esconder'));
+    window.scrollTo(0, 0);
 }
 
 const btnQuizzIndividual= (idSelecao) => {
@@ -29,10 +30,7 @@ const btnCriarQuizz = (idSelecao) => {
 }
 
 const btnHome = () => {
-    document.querySelector('.lista-quizzes').classList.remove('esconder');
-    document.querySelector('.pagina-quizz').classList.add('esconder');
-    document.querySelector('.novo-quiz').classList.add('esconder');
-    window.scrollTo(0, 0);
+    window.location.reload();
 }
 
 function getQuizzes () {
@@ -69,8 +67,6 @@ function oneQuizz (id) {
     renderQuizz(infoQuizz)});
     request.catch(error => console.log(`Unable to retrive quizzes from server, please try again later. Error: ${error.status}`));
 }
-
-getQuizzes()
 
 function renderQuizz (infoQuizz) {
   // elementos HTML:
@@ -340,8 +336,8 @@ function enviarQuizz() {
                   <p>${newQuizz.title}</p>
                 </div>
               </div>
-              <button class="btn-prosseguir">Acessar Quiz</button>
-              <button class="btn-home" onclick="window.location.reload();">Voltar para home</button>
+              <button class="btn-prosseguir" onclick="btnQuizzIndividual(${response.data.id});">Acessar Quiz</button>
+              <button class="btn-home" onclick="btnHome();">Voltar para home</button>
             `;
 
             esconderTodas();
@@ -354,6 +350,8 @@ function enviarQuizz() {
 }
 
 window.onload = () => {
+    getQuizzes();
+
     if (localStorage.getItem('quizzes') === null) {
         localStorage.setItem('quizzes', JSON.stringify([]));
     }
