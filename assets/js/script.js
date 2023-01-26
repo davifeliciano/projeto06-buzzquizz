@@ -74,61 +74,41 @@ getQuizzes()
 
 function renderQuizz (infoQuizz) {
   // elementos HTML:
-      const principal = document.querySelector('.pagina-quizz');
-      const container = document.querySelector('.container');
-      const banner = document.querySelector('.banner-sup');
-      const questao = document.querySelector('.pagina-quizz-individual');
-      const pergunta = document.querySelector('.pag-quizz-ind-titulo')
-      const respostas = document.querySelector('.pag-quizz-ind-opcoes');
-      const resposta = document.querySelector('.opcao-individual');
+
+    const container = document.querySelector('.pagina-quizz .container');
+
+    container.innerHTML = "";
+
+    container.innerHTML += `
+    <div class="banner-sup">
+      <img alt="Banner superior" src="${infoQuizz.data.image}">
+      <h2>${infoQuizz.data.title}</h2>
+    </div>
+    `
 
     for (let i = 0; i < infoQuizz.data.questions.length; i++){
-      for(let j = 0; j < infoQuizz.data.questions[i].answers.length; j++){
-              let respostaContent = `<div class="opcao-individual">
-              <img alt="${infoQuizz.data.questions[i].answers[j].text}" src="${infoQuizz.data.questions[i].answers[j].image}">
-              <h3>${infoQuizz.data.questions[i].answers[j].text}</h3>
-              </div>`
 
-              let respostasContent = ``;
+        let conteudoRepostas = '';
 
-              respostasContent += resposta.innerHTML;
-      }
-      let perguntaContent = `<h2>${infoQuizz.data.questions[i].title}</h2>`;
+        for(let j = 0; j < infoQuizz.data.questions[i].answers.length; j++){
+            conteudoRepostas += `<div class="opcao-individual">
+            <img alt="${infoQuizz.data.questions[i].answers[j].text}" src="${infoQuizz.data.questions[i].answers[j].image}">
+            <h3>${infoQuizz.data.questions[i].answers[j].text}</h3>
+            </div>`
+        }
 
-       let questaoContent = `<div> ${pergunta.innerHTML + respostas.innerHTML} </div>`;
-
+        container.innerHTML += `
+          <div class="pagina-quizz-individual">
+            <div class="pag-quizz-ind-titulo" style="background-color:${infoQuizz.data.questions[i].color}">
+              <h2>${infoQuizz.data.questions[i].title}</h2>
+            </div>
+            <div class="pag-quizz-ind-opcoes">
+              ${conteudoRepostas}
+            </div>
+          </div>
+        `
     }
-
-    container.innerHTML = `<div class="banner-sup">
-      <img alt="${infoQuizz.data.title}" src="${infoQuizz.data.image}">
-      <h2>${infoQuizz.data.title}</h2>
-    </div>`
-    
-    container.innerHTML += `<div class="pagina-quizz-individual">
-      <div class="pag-quizz-ind-titulo">
-        ${perguntaContent}
-      </div>
-      <div class="pag-quizz-ind-opcoes">
-        <div class="opcao-individual">
-          
-        </div>
-        <div class="opcao-individual">
-          
-        </div>
-        <div class="opcao-individual">
-          
-        </div>
-        <div class="opcao-individual">
-          
-        </div>
-      </div>
-    </div>
-    
-    </div>`;
-
-    principal.innerHTML = ``;
-    console.log(resposta, respostas, questao, banner, pergunta, container, principal)
-  }
+}
 
 function validaInputs(inputs) {
     /* Dada uma lista de inputs, retorna true se validas. Do
