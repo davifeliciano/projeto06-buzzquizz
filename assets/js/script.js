@@ -71,7 +71,7 @@ function oneQuizz () {
 
 getQuizzes()
 
-/*function renderQuizz (this) {
+/*function renderQuizz (infoQuizz) {
 
     const paginaQuizz = document.querySelector('.pagina-quizz');
 
@@ -79,22 +79,33 @@ getQuizzes()
 
     const containerQuizz = document.querySelector('.pagina-quizz .container');
 
-    let questionBlocks;
+    const questionBLock = document.querySelector('.pagina-quizz-individual');
 
-    for(let i = 0; i < ; i++){
-        questionBlocks += `<div class="pag-quizz-ind-opcoes">
-            <div class="opcao-individual selecionado-h3">
-              <img alt="Opção do Quizz" src="assets/img/img1.png">
-              <h3>Gatíneo</h3>
-            </div>`
+    const answerBLock = document.querySelector('.pag-quizz-ind-opcoes');
+
+    const banner = `<div class="banner-sup">
+          <img alt="Banner superior" src="${infoQuizz.image}">
+          <h2>${infoQuizz.title}</h2>
+        </div>`
+
+    let questionN;
+    let answerN;
+    let wholeN;
+
+    for(let questions = 0; questions < infoQuizz.questions.length; questions++){
+
+      for(let answers = 0; answers < infoQuizz.questions.answers.length; answers++){
+        answerN += `<div data-answer="${infoQuizz.questions[questions].answers[answer].isCorrectAnswer}" class="opcao-individual">
+              <img alt="${infoQuizz.questions[questions].answers[answers].text}" src="${infoQuizz.questions[questions].answers[answers].image}">
+              <h3>${infoQuizz.questions[questions].answers[answers].text}</h3>
+        </div>`;
+      }
+      questionN = `<div data-question="${questions}" class="pag-quizz-ind-titulo" style="color:${infoQuizz.questions.color}">
+            <h2>${infoQuizz.questions[questions].title}</h2>
+          </div>`;
+
     }
-
-    containerQuizz.innerHTML = `<div class="banner-sup">
-          <img alt="Banner superior" src="assets/img/image-sup1.png">
-          <h2>O quão Potterhead é você?</h2>
-        </div>` + `<div class="pag-quizz-ind-titulo cor-azul">
-            <h2>Em qual animal Olho-Tonto Moody transfigurou Malfoy?</h2>
-          </div>` + questionBlocks;
+        
 }*/
 
 function validaInfoBase() {
