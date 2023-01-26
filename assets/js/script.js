@@ -74,11 +74,10 @@ getQuizzes()
       
 }*/
 
-function validaInfoBase() {
-    const telaDeInfoBase = document.querySelector('#info-base');
-    const inputs = telaDeInfoBase.querySelectorAll("input");
+function validaInputs(inputs) {
+    /* Dada uma lista de inputs, retorna true se validas. Do
+    contrário, retorna false */
     inputs.forEach((input) => input.value = input.value.trim());
-
     for (const input of inputs) {
         if (!input.checkValidity()) {
             return false;
@@ -104,17 +103,19 @@ function unfoldFormCard() {
 
 function irParaPerguntas() {
 
-    if (!validaInfoBase()) {
-        alert('Valor inválido! Você deve inserir um título de 20 a 65 caracteres, uma URL válida, uma quantia de perguntas maior que 3 e uma quantia de níveis maior que 3.');
+    const telaDeInfoBase = document.querySelector('#info-base');
+    const inputs = telaDeInfoBase.querySelectorAll("input");
+
+    if (!validaInputs(inputs)) {
+        alert('Valor inválido! Você deve inserir um título de 20 a 65 caracteres, uma URL válida, uma quantia de perguntas de no mínimo 3 e uma quantia de níveis de no mínimo 2.');
         return null;
     }
 
-    const telaDeInfoBase = document.querySelector('#info-base');
     const [titleInput, imageInput, perguntasInput, niveisInput] =
         telaDeInfoBase.querySelectorAll('input');
 
-    newQuizz.title = titleInput;
-    newQuizz.image = imageInput.value;
+    newQuizz.title = titleInput.value.trim();
+    newQuizz.image = imageInput.value.trim();
 
     const telaDePerguntas = document.querySelector('#perguntas');
     const numPerguntas = parseInt(perguntasInput.value);
@@ -129,31 +130,31 @@ function irParaPerguntas() {
               </button>
             </div>
             <div class="form-grupo">
-              <input required type="text" class="input-pergunta" min="20" placeholder="Texto da pergunta">
-              <input required type="text" class="input-cor" pattern="#[a-fA-F0-9]{6}" placeholder="Cor de fundo da pergunta">
+              <input required type="text" class="texto-pergunta" min="20" placeholder="Texto da pergunta">
+              <input required type="text" class="cor-pergunta" pattern="#[a-fA-F0-9]{6}" placeholder="Cor de fundo da pergunta">
             </div>
             <div class="form-grupo">
               <span>Reposta correta</span>
-              <input required type="text" class="resp-correta" placeholder="Reposta correta">
-              <input required type="url" class="img-src-resp-correta" placeholder="URL da imagem">
+              <input required type="text" class="resp" placeholder="Reposta correta">
+              <input required type="url" class="img-src-resp" placeholder="URL da imagem">
             </div>
             <div class="form-grupo">
               <span>Repostas incorretas</span>
-              <input required type="text" class="resp-incorreta-1" placeholder="Reposta incorreta 1">
-              <input required type="url" class="img-src-resp-incorreta-1" placeholder="URL da imagem 1">
+              <input required type="text" class="resp" placeholder="Reposta incorreta 1">
+              <input required type="url" class="img-src-resp" placeholder="URL da imagem 1">
             </div>
             <div class="form-grupo">
-              <input type="text" class="resp-incorreta-2" placeholder="Reposta incorreta 2">
-              <input type="url" class="img-src-resp-incorreta-2" placeholder="URL da imagem 2">
+              <input type="text" class="resp" placeholder="Reposta incorreta 2">
+              <input type="url" class="img-src-resp" placeholder="URL da imagem 2">
             </div>
             <div class="form-grupo">
-              <input type="text" class="resp-incorreta-3" placeholder="Reposta incorreta 3">
-              <input type="url" class="img-src-resp-incorreta-3" placeholder="URL da imagem 3">
+              <input type="text" class="resp" placeholder="Reposta incorreta 3">
+              <input type="url" class="img-src-resp" placeholder="URL da imagem 3">
             </div>
           </div>`
     }
 
-    telaDePerguntas.innerHTML += '<button class="btn-prosseguir">Prosseguir para criar níveis</button>';
+    telaDePerguntas.innerHTML += '<button class="btn-prosseguir" onclick="irParaNiveis();">Prosseguir para criar níveis</button>';
 
     const telaDeNiveis = document.querySelector('#niveis');
     const numNiveis = parseInt(niveisInput.value);
@@ -190,4 +191,57 @@ function irParaPerguntas() {
 
     esconderTodas();
     telaDePerguntas.classList.remove("esconder");
+}
+
+function irParaNiveis() {
+
+    const telaDePerguntas = document.querySelector("#perguntas");
+    const inputs = telaDePerguntas.querySelectorAll("input");
+
+    if (!validaInputs(inputs)) {
+        alert('Valor inválido! O texto da pergunta deve ter no mínimo 20 caracteres, a cor deve estar em formato HEX e a resposta correta e ao menos uma resposta incorreta são obrigatórias.');
+        return null;
+    }
+
+    const formCards = telaDePerguntas.querySelectorAll('.form-card');
+
+    for (const formCard of formCards) {
+
+        const pergunta = {
+            title: '',
+            color: '',
+            answers: []
+        };
+
+        const inputTextoPergunta = formCard.querySelector(".texto-pergunta");
+        pergunta.title = inputTextoPergunta.value.trim();
+
+        const inputCorPergunta = formCard.querySelector(".cor-pergunta");
+        pergunta.color = inputCorPergunta.value.trim();
+
+        const respsInputs = formCard.querySelectorAll(".resp");
+        const respsImgInputs = formCard.querySelectorAll(".img-src-resp");
+
+        for (let i = 0; i < respsInputs.length; i++) {
+            // Se alguma reposta opcional tiver algum input em branco, ignore-a
+            if (respsInputs[i].value.trim() === "") continue;
+            if (respsImgInputs[i].value.trim() === "") continue;
+
+            const resposta = {
+                text: '',
+                image: '',
+                isCorrectAnswer: i === 0
+            }
+
+            resposta.text = respsInputs[i].value.trim();
+            resposta.image = respsImgInputs[i].value.trim();
+            pergunta.answers.push(resposta);
+        }
+
+        newQuizz.questions.push(pergunta);
+    }
+
+    const telaDeNiveis = document.querySelector('#niveis');
+    esconderTodas();
+    telaDeNiveis.classList.remove("esconder");
 }
