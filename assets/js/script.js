@@ -64,15 +64,26 @@ function oneQuizz (id) {
 
     const request = axios.get(`https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes/${id}`);
 
-    request.then(res => console.log(res.data));
+    request.then(infoQuizz => console.log(infoQuizz.data));
     request.catch(error => console.log(`Unable to retrive quizzes from server, please try again later. Error: ${error.status}`));
 }
 
 getQuizzes()
 
-/*function renderQuizz (infoQuizz) {
+function renderQuizz (infoQuizz) {
+  // elementos HTML:
+      const principal = document.querySelector('.pagina-quizz');
+      const container = document.querySelector('.container');
+      const banner = document.querySelector('.banner-sup');
+      const questao = document.querySelector('.pagina-quizz-individual');
+      const pergunta = document.querySelector('.pag-quizz-ind-titulo')
+      const respostas = document.querySelector('.pag-quizz-ind-opcoes');
+      const resposta = document.querySelector('.opcao-individual');
+
+
+
       
-}*/
+  }
 
 function validaInputs(inputs) {
     /* Dada uma lista de inputs, retorna true se validas. Do
