@@ -116,22 +116,24 @@
       </div>
     </main>
 
-    <main class="novo-quiz esconder">
+    <!-- Form de info base do quizz -->
+    <main id="info-base" class="novo-quiz esconder">
       <h3>Comece pelo começo</h3>
 
       <div class="form-card">
         <div class="form-grupo">
-          <input type="text" name="titulo" placeholder="Título do seu quizz">
-          <input type="text" name="img-src" placeholder="URL da imagem do seu quizz">
-          <input type="text" name="num-de-perguntas" placeholder="Quantidade de perguntas do seu quizz">
-          <input type="text" name="num-de-niveis" placeholder="Quantidade de níveis do seu quizz">
+          <input required type="text" min="20" max="65" placeholder="Título do seu quizz">
+          <input required type="url" id="img-src" placeholder="URL da imagem do seu quizz">
+          <input required type="number" min="3" placeholder="Quantidade de perguntas do seu quizz">
+          <input required type="number" min="2" placeholder="Quantidade de níveis do seu quizz">
         </div>
       </div>
 
-      <button class="btn-prosseguir">Prosseguir para criar perguntas</button>
+      <button class="btn-prosseguir" onclick="irParaPerguntas();">Prosseguir para criar perguntas</button>
     </main>
 
-    <main class="novo-quiz esconder">
+    <!-- Form de perguntas do quizz-->
+    <main id="perguntas" class="novo-quiz esconder">
       <h3>Crie suas perguntas</h3>
 
       <div class="form-card">
@@ -230,7 +232,8 @@
       <button class="btn-prosseguir">Prosseguir para criar níveis</button>
     </main>
 
-    <main class="novo-quiz esconder">
+    <!-- Form de níveis do quizz -->
+    <main id="niveis" class="novo-quiz esconder">
       <h3>Agora decida os níveis</h3>
 
       <div class="form-card">
@@ -281,6 +284,7 @@
       <button class="btn-prosseguir">Finalizar Quizz</button>
     </main>
 
+    <!-- Tela final de sucesso de criação do quizz -->
     <main class="novo-quiz esconder">
       <h3>Seu quizz está pronto!</h3>
       <div class="quizz-individual-container">

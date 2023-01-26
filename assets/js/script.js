@@ -1,3 +1,15 @@
+const newQuizz = {
+    title: "",
+    image: "",
+    questions: [],
+    levels: []
+}
+
+function esconderTodas() {
+    const mains = document.querySelectorAll('main');
+    mains.forEach((elem) => elem.classList.add('esconder'));
+}
+
 
 const btnCriarQuizz = () => {
     document.querySelector('.lista-quizzes').classList.add('esconder');
@@ -84,3 +96,28 @@ getQuizzes()
             <h2>Em qual animal Olho-Tonto Moody transfigurou Malfoy?</h2>
           </div>` + questionBlocks;
 }*/
+
+function validaInfoBase() {
+    const telaDeInfoBase = document.querySelector('#info-base');
+    const inputs = telaDeInfoBase.querySelectorAll("input");
+    inputs.forEach((input) => input.value = input.value.trim());
+
+    for (const input of inputs) {
+        if (!input.checkValidity()) {
+            return false;
+        }
+    }
+    return true;
+}
+
+function irParaPerguntas() {
+
+    if (!validaInfoBase()) {
+        alert('Valor inválido! Você deve inserir um título de 20 a 65 caracteres, uma URL válida, uma quantia de perguntas maior que 3 e uma quantia de níveis maior que 3.');
+        return null;
+    }
+
+    // Preencher newQuizz.title e newQuizz.image
+    // Popular as telas de perguntas e de níveis
+    // Esconder todas as telas e exibir tela de perguntas
+}
