@@ -346,6 +346,7 @@ h3 {
 	.banner-sup img{
 		height: 142px;
 		width: 100%;
+		object-fit: cover;
 	}
 
 	.banner-sup h2 {
