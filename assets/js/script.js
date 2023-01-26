@@ -80,9 +80,26 @@ function renderQuizz (infoQuizz) {
       const respostas = document.querySelector('.pag-quizz-ind-opcoes');
       const resposta = document.querySelector('.opcao-individual');
 
+    for (let i = 0; i < infoQuizz.data.questions.length; i++){
+      for(let j = 0; j < infoQuizz.data.questions[i].answers.length; j++){
+              resposta.innerHTML = `<div class="opcao-individual">
+              <img alt="${infoQuizz.data.questions[i].answers[j].text}" src="${infoQuizz.data.questions[i].answers[j].image}">
+              <h3>${infoQuizz.data.questions[i].answers[j].text}</h3>
+              </div>`
 
+              respostas.innerHTML += resposta.innerHTML;
+      }
+      pergunta.innerHTML = `<h2>${infoQuizz.data.questions[i].title}</h2>`;
 
-      
+      questao.innerHTML = `div ${pergunta.innerHTML + respostas.innerHTML}`;
+
+    }
+
+    banner.innerHTML = `<img alt="${infoQuizz.data.title}" src="${infoQuizz.data.image}">
+    <h2>${infoQuizz.data.title}</h2>`
+
+    container.innerHTML = ``
+
   }
 
 function validaInputs(inputs) {
