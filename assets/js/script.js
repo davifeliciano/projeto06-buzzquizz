@@ -64,7 +64,9 @@ function oneQuizz (id) {
 
     const request = axios.get(`https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes/${id}`);
 
-    request.then(infoQuizz => console.log(infoQuizz.data));
+    request.then(infoQuizz => {
+      console.log(infoQuizz.data)
+    renderQuizz(infoQuizz)});
     request.catch(error => console.log(`Unable to retrive quizzes from server, please try again later. Error: ${error.status}`));
 }
 
@@ -82,24 +84,50 @@ function renderQuizz (infoQuizz) {
 
     for (let i = 0; i < infoQuizz.data.questions.length; i++){
       for(let j = 0; j < infoQuizz.data.questions[i].answers.length; j++){
-              resposta.innerHTML = `<div class="opcao-individual">
+              let respostaContent = `<div class="opcao-individual">
               <img alt="${infoQuizz.data.questions[i].answers[j].text}" src="${infoQuizz.data.questions[i].answers[j].image}">
               <h3>${infoQuizz.data.questions[i].answers[j].text}</h3>
               </div>`
 
-              respostas.innerHTML += resposta.innerHTML;
-      }
-      pergunta.innerHTML = `<h2>${infoQuizz.data.questions[i].title}</h2>`;
+              let respostasContent = ``;
 
-      questao.innerHTML = `div ${pergunta.innerHTML + respostas.innerHTML}`;
+              respostasContent += resposta.innerHTML;
+      }
+      let perguntaContent = `<h2>${infoQuizz.data.questions[i].title}</h2>`;
+
+       let questaoContent = `<div> ${pergunta.innerHTML + respostas.innerHTML} </div>`;
 
     }
 
-    banner.innerHTML = `<img alt="${infoQuizz.data.title}" src="${infoQuizz.data.image}">
-    <h2>${infoQuizz.data.title}</h2>`
+    container.innerHTML = `<div class="banner-sup">
+      <img alt="${infoQuizz.data.title}" src="${infoQuizz.data.image}">
+      <h2>${infoQuizz.data.title}</h2>
+    </div>`
+    
+    container.innerHTML += `<div class="pagina-quizz-individual">
+      <div class="pag-quizz-ind-titulo">
+        ${perguntaContent}
+      </div>
+      <div class="pag-quizz-ind-opcoes">
+        <div class="opcao-individual">
+          
+        </div>
+        <div class="opcao-individual">
+          
+        </div>
+        <div class="opcao-individual">
+          
+        </div>
+        <div class="opcao-individual">
+          
+        </div>
+      </div>
+    </div>
+    
+    </div>`;
 
-    container.innerHTML = ``
-
+    principal.innerHTML = ``;
+    console.log(resposta, respostas, questao, banner, pergunta, container, principal)
   }
 
 function validaInputs(inputs) {
