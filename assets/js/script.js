@@ -117,7 +117,78 @@ function irParaPerguntas() {
         return null;
     }
 
-    // Preencher newQuizz.title e newQuizz.image
-    // Popular as telas de perguntas e de níveis
-    // Esconder todas as telas e exibir tela de perguntas
+    const telaDeInfoBase = document.querySelector('#info-base');
+    const [titleInput, imageInput, perguntasInput, niveisInput] =
+        telaDeInfoBase.querySelectorAll('input');
+
+    newQuizz.title = titleInput;
+    newQuizz.image = imageInput.value;
+
+    const telaDePerguntas = document.querySelector('#perguntas');
+    const numPerguntas = parseInt(perguntasInput.value);
+
+    for (let index = 0; index < numPerguntas; index++) {
+        telaDePerguntas.innerHTML += `
+          <div class="form-card fold">
+            <div class="form-card-header">
+              <span>Pergunta ${index + 1}</span>
+              <button class="btn-fold">
+                <ion-icon name="create-outline"></ion-icon>
+              </button>
+            </div>
+            <div class="form-grupo">
+              <input required type="text" class="input-pergunta" min="20" placeholder="Texto da pergunta">
+              <input required type="text" class="input-cor" pattern="#[a-fA-F0-9]{6}" placeholder="Cor de fundo da pergunta">
+            </div>
+            <div class="form-grupo">
+              <span>Reposta correta</span>
+              <input required type="text" class="resp-correta" placeholder="Reposta correta">
+              <input required type="url" class="img-src-resp-correta" placeholder="URL da imagem">
+            </div>
+            <div class="form-grupo">
+              <span>Repostas incorretas</span>
+              <input required type="text" class="resp-incorreta-1" placeholder="Reposta incorreta 1">
+              <input required type="url" class="img-src-resp-incorreta-1" placeholder="URL da imagem 1">
+            </div>
+            <div class="form-grupo">
+              <input type="text" class="resp-incorreta-2" placeholder="Reposta incorreta 2">
+              <input type="url" class="img-src-resp-incorreta-2" placeholder="URL da imagem 2">
+            </div>
+            <div class="form-grupo">
+              <input type="text" class="resp-incorreta-3" placeholder="Reposta incorreta 3">
+              <input type="url" class="img-src-resp-incorreta-3" placeholder="URL da imagem 3">
+            </div>
+          </div>`
+    }
+
+    telaDePerguntas.innerHTML += '<button class="btn-prosseguir">Prosseguir para criar níveis</button>';
+
+    const telaDeNiveis = document.querySelector('#niveis');
+    const numNiveis = parseInt(niveisInput.value);
+
+    for (let index = 0; index < numNiveis; index++) {
+        telaDeNiveis.innerHTML += `
+          <div class="form-card fold">
+            <div class="form-card-header">
+             <span>Nível ${index + 1}</span>
+             <button class="btn-fold">
+               <ion-icon name="create-outline"></ion-icon>
+             </button>
+            </div>
+            <div class="form-grupo">
+              <input required type="text" class="titulo-nivel" min="10" placeholder="Título do nível">
+              <input required type="number" class="acerto-min-nivel" min="0" max="100" placeholder="% de acerto mínimo">
+              <input required type="url" class="img-src-nivel" placeholder="URL da imagem do nível">
+              <input required type="text" class="desc-nivel" min="30" placeholder="Descrição do nível">
+            </div>
+          </div>`
+    }
+
+    telaDeNiveis.innerHTML += '<button class="btn-prosseguir">Finalizar Quizz</button>';
+
+    document.querySelectorAll(":is(#perguntas, #niveis) .form-card:first-of-type")
+        .forEach((elem) => elem.classList.remove("fold"));
+
+    esconderTodas();
+    telaDePerguntas.classList.remove("esconder");
 }
