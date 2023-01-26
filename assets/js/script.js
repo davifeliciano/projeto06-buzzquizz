@@ -10,8 +10,18 @@ function esconderTodas() {
     mains.forEach((elem) => elem.classList.add('esconder'));
 }
 
+const btnQuizzIndividual= (idSelecao) => {
+    document.querySelector('.lista-quizzes').classList.add('esconder');
+    document.querySelector('.pagina-quizz').classList.remove('esconder');
+    document.querySelector('.novo-quiz').classList.add('esconder');
+    window.scrollTo(0, 0);
 
-const btnCriarQuizz = () => {
+	const id = idSelecao.getAttribute('data-id');
+	console.log(id);
+    renderQuizz();
+}
+
+const btnCriarQuizz = (idSelecao) => {
     document.querySelector('.lista-quizzes').classList.add('esconder');
     document.querySelector('.pagina-quizz').classList.add('esconder');
     document.querySelector('.novo-quiz').classList.remove('esconder');
@@ -35,11 +45,10 @@ function getQuizzes () {
         
         const exibirQuizzes = document.querySelector('.area-todos-quizzes');
         console.log(quizzes.data.length);
-        //exibirQuizzes.innerHTML = "";
 
         for (let i = 0; i < quizzes.data.length; i++){
             exibirQuizzes.innerHTML += `
-            <div data-id="${quizzes.data[i].id}" onclick="funcaozinha(this)" class="quizz-individual">
+            <div data-id="${quizzes.data[i].id}" onclick="btnQuizzIndividual(this)" class="quizz-individual">
 							<div class="background-individual"></div>
               <img alt="Imagem de ${quizzes.data[i].title}" src="${quizzes.data[i].image}">
               <p>${quizzes.data[i].title}</p>
@@ -50,12 +59,6 @@ function getQuizzes () {
     });
     request.catch(error => `Unable to retrive quizzes from server, please try again later. Error: ${error.status}`);
 }
-
-/*function funcaozinha(idSelecao){
-	const id = idSelecao.getAttribute('data-id');
-	console.log(id);
-    renderQuizz();
-}*/
 
 function oneQuizz () {
 
