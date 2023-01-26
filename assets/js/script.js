@@ -88,13 +88,13 @@ function renderQuizz (infoQuizz) {
 
     for (let i = 0; i < infoQuizz.data.questions.length; i++){
 
-        let conteudoRepostas = '';
+        let conteudoRepostas = [];
 
         for(let j = 0; j < infoQuizz.data.questions[i].answers.length; j++){
-            conteudoRepostas += `<div class="opcao-individual">
+            conteudoRepostas.push(`<div class="opcao-individual">
             <img alt="${infoQuizz.data.questions[i].answers[j].text}" src="${infoQuizz.data.questions[i].answers[j].image}">
             <h3>${infoQuizz.data.questions[i].answers[j].text}</h3>
-            </div>`
+            </div>`)
         }
 
         container.innerHTML += `
@@ -103,12 +103,12 @@ function renderQuizz (infoQuizz) {
               <h2>${infoQuizz.data.questions[i].title}</h2>
             </div>
             <div class="pag-quizz-ind-opcoes">
-              ${conteudoRepostas}
+              ${conteudoRepostas.sort(() => Math.random() - 0.5).join(" ")}
             </div>
           </div>
         `
+        }
     }
-}
 
 function validaInputs(inputs) {
     /* Dada uma lista de inputs, retorna true se validas. Do
