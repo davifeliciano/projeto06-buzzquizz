@@ -18,7 +18,7 @@ const btnQuizzIndividual= (idSelecao) => {
 
 	const id = idSelecao.getAttribute('data-id');
 	console.log(id);
-    oneQuizz();
+    oneQuizz(id);
 }
 
 const btnCriarQuizz = (idSelecao) => {
@@ -64,52 +64,13 @@ function oneQuizz (id) {
 
     const request = axios.get(`https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes/${id}`);
 
-    request.then(renderQuizz);
+    request.then(res => console.log(res.data));
     request.catch(error => console.log(`Unable to retrive quizzes from server, please try again later. Error: ${error.status}`));
 }
 
 getQuizzes()
 
 /*function renderQuizz (infoQuizz) {
-
-    const paginaQuizz = document.querySelector('.pagina-quizz');
-
-    paginaQuizz.classList.remove('escondido');
-
-    const containerQuizz = document.querySelector('.pagina-quizz .container');
-
-    const questionBLock = document.querySelector('.pagina-quizz-individual');
-
-    const answerBLock = document.querySelector('.pag-quizz-ind-opcoes');
-
-    const banner = `<div class="banner-sup">
-          <img alt="Banner superior" src="${infoQuizz.image}">
-          <h2>${infoQuizz.title}</h2>
-        </div>`
-
-    let questionN;
-    let answerN;
-    let wholeN;
-
-    for(let questions = 0; questions < infoQuizz.questions.length; questions++){
-
-      for(let answers = 0; answers < infoQuizz.questions.answers.length; answers++){
-        answerN += `<div data-answer="${infoQuizz.questions[questions].answers[answer].isCorrectAnswer}" class="opcao-individual">
-              <img alt="${infoQuizz.questions[questions].answers[answers].text}" src="${infoQuizz.questions[questions].answers[answers].image}">
-              <h3>${infoQuizz.questions[questions].answers[answers].text}</h3>
-        </div>`;
-        answerBlock.innerHTML = answerN;
-      }
-      questionN += `<div data-question="${questions+1}" class="pag-quizz-ind-titulo" style="color:${infoQuizz.questions.color}">
-            <h2>${infoQuizz.questions[questions].title}</h2>
-          </div>` + answerN;
-
-        questionBlock.innerHTML = questionN;
-
-        wholeN += questionN;
-    }
-
-    containerQuizz.innerHTML = banner + wholeN;
       
 }*/
 
