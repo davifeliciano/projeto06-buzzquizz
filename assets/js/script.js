@@ -196,7 +196,7 @@ function renderQuizz (infoQuizz) {
 
 
     container.innerHTML += `<div class="pagina-quizz-individual-resultado">
-    <div class="pag-quizz-ind-res-titulo" style="background-color: ">
+    <div class="pag-quizz-ind-res-titulo" style="background-color: black">
       <h2>${porcentagem}% de acerto: ${levelClass.title}</h2>
     </div>
     <div class="pag-quizz-reiniciar">
