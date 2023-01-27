@@ -204,10 +204,10 @@ h3 {
 	height: 227px;
 	width: 100%;
 	object-fit: cover;
-
 }
 
-.pagina-quizz-individual {
+.pagina-quizz-individual,
+.pagina-quizz-individual-resultado {
 	box-sizing: border-box;
 	margin: 0 auto;
 	background-color: #ffffff;
@@ -219,7 +219,8 @@ h3 {
 	padding: 35px;
 }
 
-.pag-quizz-ind-titulo {
+.pag-quizz-ind-titulo,
+.pag-quizz-ind-res-titulo {
 	width: 688px;
 	height: 137px;
 	margin-bottom: 20px;
@@ -277,8 +278,39 @@ h3 {
 	object-fit: cover;
 }
 
+.pagina-quizz-individual-resultado {
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-evenly;
+}
+
+.pagina-quizz-individual-resultado button {
+	height: 54px;
+	width: 250px;
+	padding-inline: 50px;
+	margin-top: 65px;
+	background-color: #ec362d;
+	border: none;
+	border-radius: 15px;
+	color: white;
+	filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.05));
+}
+
+.pagina-quizz-individual-resultado button:active {
+	transform: scale(0.95);
+}
+
+.pagina-quizz-individual-resultado button:hover {
+	cursor: pointer;
+}
+
 .pag-quizz-reiniciar {
 	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 	gap: 20px;
 	flex-wrap: wrap;
 }
@@ -287,13 +319,11 @@ h3 {
 	width: 50%;
 }
 
-.reiniciar-rigth {
-	width: 45%;
-	display: flex;
-	justify-content: flex-start;
+.reiniciar-right {
+	width: 50%;
 }
 
-.reiniciar-rigth h3 {
+.reiniciar-right h3 {
 	text-align: left;
 	color: #484848;
 	font-family: 'Roboto', sans-serif;
@@ -323,7 +353,8 @@ h3 {
 	}
 
 	.quizz-individual,
-	.pagina-quizz-individual {
+	.pagina-quizz-individual,
+	.pagina-quizz-individual-resultado {
 		width: 100%;
 		height: auto;
 	}
@@ -358,7 +389,8 @@ h3 {
 		width:90%;
 	}
 
-	.pag-quizz-ind-titulo{
+	.pag-quizz-ind-titulo,
+	.pag-quizz-ind-res-titulo {
 		width: 100%;
 	}
 
@@ -374,14 +406,14 @@ h3 {
 		align-items: center;
 	}
 
-	.reiniciar-rigth {
+	.reiniciar-right {
 		width: 100%;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 	}
 
-	.reiniciar-rigth h3 {
+	.reiniciar-right h3 {
 		font-size: 17px;
 		line-height: 19px;
 	}

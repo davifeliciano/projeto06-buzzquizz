@@ -7,6 +7,11 @@ const newQuizz = {
 
 let myQuizzes;
 
+//variáveis da finalização do quizz
+let pontuacao = 0;
+let level;
+
+
 function esconderTodas() {
     const mains = document.querySelectorAll('main');
     mains.forEach((elem) => elem.classList.add('esconder'));
@@ -66,7 +71,7 @@ function getQuizzes () {
         }
         
     });
-    request.catch(error => console.log(`Unable to retrive quizzes from server, please try again later. Error: ${error.status}`));
+    request.catch(error => console.log(`Unable to retrive quizzes from server, please try again later. Error: ${error.response.status}`));
 }
 
 function oneQuizz (id) {
@@ -74,16 +79,23 @@ function oneQuizz (id) {
     const request = axios.get(`https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes/${id}`);
 
     request.then(infoQuizz => {
-    renderQuizz(infoQuizz)});
-    request.catch(error => console.log(`Unable to retrive quizzes from server, please try again later. Error: ${error.status}`));
+      console.log(infoQuizz);
+      pontuacao = 0;
+      level = undefined;
+    renderQuizz(infoQuizz)
+    document.querySelector('.lista-quizzes').classList.add('esconder');
+    document.querySelector('.pagina-quizz').classList.remove('esconder');
+    document.querySelector('.novo-quiz').classList.add('esconder');
+    window.scrollTo(0, 0);
+  });
+    request.catch(error => console.log(`Unable to retrive quizzes from server, please try again later. Error: ${error.response.status}`));
 }
 
 function renderQuizz (infoQuizz) {
 
-  document.querySelector('.lista-quizzes').classList.add('esconder');
-    document.querySelector('.pagina-quizz').classList.remove('esconder');
-    document.querySelector('.novo-quiz').classList.add('esconder');
-    window.scrollTo(0, 0);
+    level = infoQuizz.data.levels
+
+    console.log(level);
 
     const quizzID = infoQuizz.data.id;
 
@@ -150,7 +162,54 @@ function renderQuizz (infoQuizz) {
           elem.children.item(1).style.color = "#FF4B4B";
         }
       })
+
+      if(clicado.dataset.correct == "true"){
+        pontuacao++;
+      }
       
+      const selecionados = document.querySelectorAll('.selecionado');
+      const questoes = document.querySelectorAll('.pagina-quizz-individual');
+      
+      const parametroQuestoes = questoes.length;
+
+      console.log(selecionados, questoes)
+
+      if(selecionados.length == questoes.length){
+        console.log("chegou aqui");
+        mostrarResultado(pontuacao, parametroQuestoes);
+      }
+
+  }
+
+  function mostrarResultado (pontuacao, questoes) {
+
+    let porcentagem = ((pontuacao/questoes)*100).toFixed(0);
+    let levelClass;
+    const container = document.querySelector('.pagina-quizz .container');
+    const iD = container.id;
+
+    for(let i = 0; i < level.length; i++){
+      if(porcentagem >= level[i].minValue){
+          levelClass = level[i];
+      }
+    }
+
+
+    container.innerHTML += `<div class="pagina-quizz-individual-resultado">
+    <div class="pag-quizz-ind-res-titulo" style="background-color: ">
+      <h2>${porcentagem}% de acerto: ${levelClass.title}</h2>
+    </div>
+    <div class="pag-quizz-reiniciar">
+      <div class="reiniciar-left">
+        <img alt="${levelClass.title}" src="${levelClass.image}">
+      </div>
+      <div class="reiniciar-right">
+        <h3>${levelClass.text}</h3>
+      </div>
+    </div>
+    <button onclick="oneQuizz(${iD})" class="reinicio">Reiniciar Quizz</button>
+    <button onclick="window.location.reload(true)" class="home">Voltar para a Home</button>
+  </div>`
   }
   
 
