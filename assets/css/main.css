@@ -465,6 +465,9 @@ h3 {
 	filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.05));
 }
 
+.form-card:has(input.invalido) {
+	border: 1px solid #ec362d;
+}
 .form-card span {
 	font-size: 20px;
 	font-weight: 700;
@@ -506,11 +509,29 @@ h3 {
 	border-radius: 5px;
 }
 
+.form-grupo input:focus {
+	outline-color: #d1d1d1;
+}
 .form-grupo input::placeholder {
 	color: #bababa;
 	font-style: italic;
 }
 
+.form-grupo input.invalido {
+	background-color: #fee9e9;
+}
+
+.form-grupo input+span {
+	display: none;
+	margin-top: 3px;
+	font-size: 16px;
+	font-weight: 400;
+	color: #ec362d;
+}
+
+.form-grupo input.invalido+span {
+	display: unset;
+}
 /* A classe fold colapsa o form card, mantendo só seu header visível */
 .form-card.fold .btn-fold {
 	display: block;

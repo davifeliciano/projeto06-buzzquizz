@@ -117,10 +117,22 @@
 
       <div class="form-card">
         <div class="form-grupo">
-          <input required type="text" min="20" max="65" placeholder="Título do seu quizz">
-          <input required type="url" id="img-src" placeholder="URL da imagem do seu quizz">
-          <input required type="number" min="3" placeholder="Quantidade de perguntas do seu quizz">
-          <input required type="number" min="2" placeholder="Quantidade de níveis do seu quizz">
+          <div>
+            <input required type="text" pattern="^.{20,65}$" placeholder="Título do seu quizz">
+            <span>Precisa ter de 20 a 65 caracteres</span>
+          </div>
+          <div>
+            <input required type="url" id="img-src" placeholder="URL da imagem do seu quizz">
+            <span>Precisa ser uma URL válida</span>
+          </div>
+          <div>
+            <input required type="number" min="3" placeholder="Quantidade de perguntas do seu quizz">
+            <span>Precisa ter no mínimo 3 perguntas</span>
+          </div>
+          <div>
+            <input required type="number" min="2" placeholder="Quantidade de níveis do seu quizz">
+            <span>Precisa ter no mínimo 2 níveis</span>
+          </div>
         </div>
       </div>
 

@@ -217,12 +217,18 @@ function validaInputs(inputs) {
     /* Dada uma lista de inputs, retorna true se validas. Do
     contrário, retorna false */
     inputs.forEach((input) => input.value = input.value.trim());
+    let valid = true;
+
     for (const input of inputs) {
         if (!input.checkValidity()) {
-            return false;
+            input.classList.add("invalido");
+            valid = false;
+        } else {
+            input.classList.remove("invalido");
         }
     }
-    return true;
+
+    return valid;
 }
 
 function unfoldFormCard() {
@@ -247,7 +253,7 @@ function irParaPerguntas() {
     const inputs = telaDeInfoBase.querySelectorAll("input");
 
     if (!validaInputs(inputs)) {
-        alert('Valor inválido! Você deve inserir um título de 20 a 65 caracteres, uma URL válida, uma quantia de perguntas de no mínimo 3 e uma quantia de níveis de no mínimo 2.');
+        // alert('Valor inválido! Você deve inserir um título de 20 a 65 caracteres, uma URL válida, uma quantia de perguntas de no mínimo 3 e uma quantia de níveis de no mínimo 2.');
         return null;
     }
 
@@ -270,18 +276,36 @@ function irParaPerguntas() {
               </button>
             </div>
             <div class="form-grupo">
-              <input required type="text" class="texto-pergunta" min="20" placeholder="Texto da pergunta">
-              <input required type="text" class="cor-pergunta" pattern="#[a-fA-F0-9]{6}" placeholder="Cor de fundo da pergunta">
+              <div>
+                <input required type="text" class="texto-pergunta" pattern="^.{20,}$" placeholder="Texto da pergunta">
+                <span>Precisa ter no mínimo 20 caracteres</span>
+              </div>
+              <div>
+                <input required type="text" class="cor-pergunta" pattern="#[a-fA-F0-9]{6}" placeholder="Cor de fundo da pergunta">
+                <span>Precisa ser uma cor no formato HEX (#xxxxxx)</span>
+              </div>
             </div>
             <div class="form-grupo">
               <span>Reposta correta</span>
-              <input required type="text" class="resp" placeholder="Reposta correta">
-              <input required type="url" class="img-src-resp" placeholder="URL da imagem">
+              <div>
+                <input required type="text" class="resp" placeholder="Reposta correta">
+                <span>Preencha este campo</span>
+              </div>
+              <div>
+                <input required type="url" class="img-src-resp" placeholder="URL da imagem">
+                <span>Precisa ser uma URL válida</span>
+              </div>
             </div>
             <div class="form-grupo">
               <span>Repostas incorretas</span>
-              <input required type="text" class="resp" placeholder="Reposta incorreta 1">
-              <input required type="url" class="img-src-resp" placeholder="URL da imagem 1">
+              <div>
+                <input required type="text" class="resp" placeholder="Reposta incorreta 1">
+                <span>Preencha este campo</span>
+              </div>
+              <div>
+                <input required type="url" class="img-src-resp" placeholder="URL da imagem 1">
+                <span>Precisa ser uma URL válida</span>
+              </div>
             </div>
             <div class="form-grupo">
               <input type="text" class="resp" placeholder="Reposta incorreta 2">
@@ -309,10 +333,22 @@ function irParaPerguntas() {
              </button>
             </div>
             <div class="form-grupo">
-              <input required type="text" class="titulo-nivel" min="10" placeholder="Título do nível">
-              <input required type="number" class="acerto-min-nivel" min="0" max="100" placeholder="% de acerto mínimo">
-              <input required type="url" class="img-src-nivel" placeholder="URL da imagem do nível">
-              <input required type="text" class="desc-nivel" min="30" placeholder="Descrição do nível">
+              <div>
+                <input required type="text" class="titulo-nivel" pattern="^.{10,}$" placeholder="Título do nível">
+                <span>Precisa ter no mínimo 10 caracteres</span>
+              </div>
+              <div>
+                <input required type="number" class="acerto-min-nivel" min="0" max="100" placeholder="% de acerto mínimo">
+                <span>Precisa ser um valor entre 0 e 100%</span>
+              </div>
+              <div>
+                <input required type="url" class="img-src-nivel" placeholder="URL da imagem do nível">
+                <span>Precisa ser uma URL válida</span>
+              </div>
+              <div>
+                <input required type="text" class="desc-nivel" pattern="^.{30,}$" placeholder="Descrição do nível">
+                <span>Precisa ter no mínimo 30 caracteres</span>
+              </div>
             </div>
           </div>`
     }
@@ -340,7 +376,7 @@ function irParaNiveis() {
     const inputs = telaDePerguntas.querySelectorAll("input");
 
     if (!validaInputs(inputs)) {
-        alert('Valor inválido! O texto da pergunta deve ter no mínimo 20 caracteres, a cor deve estar em formato HEX e a resposta correta e ao menos uma resposta incorreta são obrigatórias.');
+        // alert('Valor inválido! O texto da pergunta deve ter no mínimo 20 caracteres, a cor deve estar em formato HEX e a resposta correta e ao menos uma resposta incorreta são obrigatórias.');
         return null;
     }
 
@@ -398,7 +434,7 @@ function enviarQuizz() {
         .indexOf("0");
 
     if (!validaInputs(inputs) || zeroPercentIndex === -1) {
-        alert('Valor inválido! O título dos níveis deve ter no mínimo 10 caracteres, a descrição deve ter no mínimo 30 caractéres, o formato de URL deve ser válido e ao menos um nível deve ter percentual de acerto mínimo nulo.');
+        // alert('Valor inválido! O título dos níveis deve ter no mínimo 10 caracteres, a descrição deve ter no mínimo 30 caractéres, o formato de URL deve ser válido e ao menos um nível deve ter percentual de acerto mínimo nulo.');
         return null;
     }
 
