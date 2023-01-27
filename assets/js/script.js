@@ -111,6 +111,15 @@ function renderQuizz (infoQuizz) {
 
 function trataResposta (clicado) {
 
+    if(clicado.classList.contains('selecionado')){
+      return;
+    }
+    if(clicado.classList.contains('locked')){
+      return;
+    }
+
+    clicado.classList.add('selecionado');
+
     const parametro = clicado.innerHTML;
 
     const blocoRespectivo = clicado.parentNode;
@@ -118,6 +127,7 @@ function trataResposta (clicado) {
     Array.from(blocoRespectivo.children).forEach(elem => {
       if(elem.innerHTML != parametro ){
         elem.style.opacity = "50%";
+        elem.classList.add('locked')
       }
       if(elem.getAttribute('data-correct') == "true"){
         elem.children.item(1).style.color = "#009C22";
