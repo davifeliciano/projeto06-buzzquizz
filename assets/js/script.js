@@ -38,6 +38,9 @@ const btnHome = () => {
 // Listagem dos Quizzes - gerais e do usuário
 function getQuizzes () {
 
+  document.querySelector('.lista-quizzes').classList.add('esconder');
+  document.querySelector('.loading').classList.remove('esconder');
+
     const request = axios.get('https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes');
 
     request.then(quizzes => {
@@ -69,6 +72,9 @@ function getQuizzes () {
             `;
           }
         }
+
+        document.querySelector('.loading').classList.add('esconder');
+        document.querySelector('.lista-quizzes').classList.remove('esconder');
         
     });
     request.catch(error => console.log(`Unable to retrive quizzes from server, please try again later. Error: ${error.response.status}`));
@@ -76,14 +82,16 @@ function getQuizzes () {
 
 function oneQuizz (id) {
 
+    document.querySelector('.lista-quizzes').classList.add('esconder');
+    document.querySelector('.loading').classList.remove('esconder');
+
     const request = axios.get(`https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes/${id}`);
 
     request.then(infoQuizz => {
-      console.log(infoQuizz);
       pontuacao = 0;
       level = undefined;
     renderQuizz(infoQuizz)
-    document.querySelector('.lista-quizzes').classList.add('esconder');
+    document.querySelector('.loading').classList.add('esconder');
     document.querySelector('.pagina-quizz').classList.remove('esconder');
     document.querySelector('.novo-quiz').classList.add('esconder');
     window.scrollTo(0, 0);
@@ -94,8 +102,6 @@ function oneQuizz (id) {
 function renderQuizz (infoQuizz) {
 
     level = infoQuizz.data.levels
-
-    console.log(level);
 
     const quizzID = infoQuizz.data.id;
 
@@ -172,10 +178,7 @@ function renderQuizz (infoQuizz) {
       
       const parametroQuestoes = questoes.length;
 
-      console.log(selecionados, questoes)
-
       if(selecionados.length == questoes.length){
-        console.log("chegou aqui");
         mostrarResultado(pontuacao, parametroQuestoes);
       }
 
@@ -208,7 +211,7 @@ function renderQuizz (infoQuizz) {
       </div>
     </div>
     <button onclick="oneQuizz(${iD})" class="reinicio">Reiniciar Quizz</button>
-    <button onclick="window.location.reload(true)" class="home">Voltar para a Home</button>
+    <button onclick="btnHome()" class="home">Voltar para a Home</button>
   </div>`
   }
   

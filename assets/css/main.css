@@ -278,6 +278,10 @@ h3 {
 	object-fit: cover;
 }
 
+.opcao-individual:hover {
+	cursor: pointer;
+}
+
 .pagina-quizz-individual-resultado {
 	text-align: center;
 	display: flex;
@@ -336,6 +340,24 @@ h3 {
 .pag-quizz-reiniciar img{
 	width: 364px;
 	height: 273px;
+}
+
+.loading {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.load {
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	color: #EC362D;
+	font-size: 25px;
+	font-weight: 700;
+	position: absolute;
+	top: 50%;
+	left: translateY(-50%);
 }
 
 @media (max-width: 1100px) {
@@ -447,6 +469,14 @@ h3 {
 	border-radius: 15px;
 	color: white;
 	filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.05));
+}
+
+.btn-prosseguir:hover {
+	cursor: pointer;
+}
+
+.btn-prosseguir:active {
+	transform: scale(0.95);
 }
 
 .btn-home {
