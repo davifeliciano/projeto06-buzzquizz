@@ -82,7 +82,7 @@ function getQuizzes () {
 
 function oneQuizz (id) {
 
-    document.querySelector('.lista-quizzes').classList.add('esconder');
+    esconderTodas();
     document.querySelector('.loading').classList.remove('esconder');
 
     const request = axios.get(`https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes/${id}`);
@@ -480,7 +480,10 @@ function enviarQuizz() {
 
         newQuizz.levels.push(nivel);
     }
+
+    esconderTodas();
     document.querySelector('.loading').classList.remove('esconder');
+
     // Postando o Quizz na API
     const url = 'https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes';
 
@@ -501,28 +504,28 @@ function enviarQuizz() {
                   <p>${newQuizz.title}</p>
                 </div>
               </div>
-              <button class="btn-prosseguir" onclick="btnQuizzIndividual(${response.data.id});">Acessar Quiz</button>
+              <button class="btn-prosseguir" onclick="oneQuizz(${response.data.id});">Acessar Quiz</button>
               <button class="btn-home" onclick="btnHome();">Voltar para home</button>
             `;
+
+            // Reseta objeto newQuizz
+            newQuizz = {
+                title: "",
+                image: "",
+                questions: [],
+                levels: []
+            }
 
             esconderTodas();
             telaFinal.classList.remove("esconder");
         })
         .catch((error) => {
             document.querySelector('.loading').classList.add('esconder');
+            telaDeNiveis.classList.remove("esconder");
             console.log(error);
             alert('Unable to post quizzes to server, please try again later.');
         });
 }
-
-window.onload = () => {
-    getQuizzes();
-
-    if (localStorage.getItem('quizzes') === null) {
-        localStorage.setItem('quizzes', JSON.stringify([]));
-    }
-}
-
 
 // Exibir quizzes do usuario
 function getQuizzesUser () {
@@ -550,4 +553,11 @@ function getQuizzesUser () {
   }
   }
 
-  getQuizzesUser()
+window.onload = () => {
+    if (localStorage.getItem('quizzes') === null) {
+        localStorage.setItem('quizzes', JSON.stringify([]));
+    }
+
+    getQuizzes();
+    getQuizzesUser();
+}
