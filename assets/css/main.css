@@ -177,7 +177,8 @@ h3 {
 .pagina-quizz .container {
 	width: 100%;
 	white-space: pre-wrap;
-	word-break: break-all;
+	word-break: normal;
+	text-align: center;
 }
 
 .banner-sup {
