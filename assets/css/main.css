@@ -189,7 +189,6 @@ h3 {
 	align-items: center;
 	background: linear-gradient(0deg, rgba(0, 0, 0, 0.57),rgba(0, 0, 0, 0.57));
 	position: relative;
-	margin-top: 69px;
 }
 
 .banner-sup h2{
@@ -309,12 +308,14 @@ h3 {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	gap: 20px;
 	flex-wrap: wrap;
 }
 
 .reiniciar-left{
 	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .reiniciar-right {
@@ -327,7 +328,7 @@ h3 {
 	font-family: 'Roboto', sans-serif;
 	font-size: 19px;
 	font-weight: 700;
-	line-height: 25px;
+	line-height: 20px;
 }
 
 
