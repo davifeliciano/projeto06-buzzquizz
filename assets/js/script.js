@@ -142,7 +142,17 @@ function renderQuizz (infoQuizz) {
         container.id = quizzID;
     }
 
+    const scrollDown = (elemento) => {
+
+      if(elemento === null){
+        return;
+      }
+
+      window.scrollTo(0, elemento.offsetTop - 50);
+    }
+
     function trataResposta (clicado) {
+
 
       if(clicado.classList.contains('selecionado')){
         return;
@@ -156,6 +166,8 @@ function renderQuizz (infoQuizz) {
       const parametro = clicado.innerHTML;
   
       const blocoRespectivo = clicado.parentNode;
+
+      console.log(blocoRespectivo);
   
       Array.from(blocoRespectivo.children).forEach(elem => {
         if(elem.innerHTML != parametro ){
@@ -168,6 +180,10 @@ function renderQuizz (infoQuizz) {
           elem.children.item(1).style.color = "#FF4B4B";
         }
       })
+
+      setTimeout(() => scrollDown(blocoRespectivo.parentNode.nextElementSibling), 2000);
+
+
 
       if(clicado.dataset.correct == "true"){
         pontuacao++;
@@ -213,7 +229,9 @@ function renderQuizz (infoQuizz) {
     <button onclick="oneQuizz(${iD})" class="reinicio">Reiniciar Quizz</button>
     <button onclick="btnHome()" class="home">Voltar para a Home</button>
   </div>`
-  }
+  
+    setTimeout(() => window.scrollTo(0, document.querySelector('.pagina-quizz-individual-resultado').offsetTop - 50), 2000);
+}
   
 
 function validaInputs(inputs) {

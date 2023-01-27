@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
+html, body {
+	scroll-behavior: smooth;
+}
 
 body {
 	background-color: #FAFAFA;
@@ -283,7 +286,7 @@ h3 {
 	height: 54px;
 	width: 250px;
 	padding-inline: 50px;
-	margin-top: 65px;
+	margin-top: 20px;
 	background-color: #ec362d;
 	border: none;
 	border-radius: 15px;
