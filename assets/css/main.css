@@ -204,6 +204,7 @@ h3 {
 	height: 227px;
 	width: 100%;
 	object-fit: cover;
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%);
 }
 
 .pagina-quizz-individual,
@@ -228,18 +229,6 @@ h3 {
 	justify-content: center;
 	align-items: center;
 	text-align: center;
-}
-
-.cor-azul {
-	background-color: #434CA0;
-}
-
-.cor-roxa {
-	background-color: #A0438D;
-}
-
-.cor-vermelha {
-	background-color: #EC362D;
 }
 
 .pag-quizz-ind-titulo h2{
@@ -320,7 +309,7 @@ h3 {
 }
 
 .reiniciar-left{
-	width: 50%;
+	width: 100%;
 }
 
 .reiniciar-right {

@@ -462,12 +462,13 @@ function enviarQuizz() {
 
         newQuizz.levels.push(nivel);
     }
-
+    document.querySelector('.loading').classList.remove('esconder');
     // Postando o Quizz na API
     const url = 'https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes';
 
     return axios.post(url, newQuizz)
         .then((response) => {
+          document.querySelector('.loading').classList.add('esconder');
             const quizzes = JSON.parse(localStorage.getItem('quizzes'));
             quizzes.push(response.data);
             const quizzesStr = JSON.stringify(quizzes);
@@ -490,6 +491,7 @@ function enviarQuizz() {
             telaFinal.classList.remove("esconder");
         })
         .catch((error) => {
+            document.querySelector('.loading').classList.add('esconder');
             console.log(error);
             alert('Unable to post quizzes to server, please try again later.');
         });
