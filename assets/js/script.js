@@ -40,18 +40,34 @@ function getQuizzes () {
     request.then(quizzes => {
         console.log(quizzes.data)
         console.log(quizzes.data[0].id)
-        
+        console.log (myQuizzes.length);
         const exibirQuizzes = document.querySelector('.area-todos-quizzes');
         console.log(quizzes.data.length);
 
-        for (let i = 0; i < quizzes.data.length; i++){
+        if(myQuizzes.length !== 0){
+          for (let j = 0; j < myQuizzes.length; j++){
+            for (let i = 0; i < quizzes.data.length; i++){
+              if (myQuizzes[j].id !== quizzes.data[i].id){
+              exibirQuizzes.innerHTML += `
+              <div data-id="${quizzes.data[i].id}" onclick="btnQuizzIndividual(this)" class="quizz-individual">
+                <div class="background-individual"></div>
+                <img alt="Imagem de ${quizzes.data[i].title}" src="${quizzes.data[i].image}">
+                <p>${quizzes.data[i].title}</p>
+              </div>
+              `;
+              }
+            }
+          }
+        } else {
+          for (let i = 0; i < quizzes.data.length; i++){
             exibirQuizzes.innerHTML += `
             <div data-id="${quizzes.data[i].id}" onclick="btnQuizzIndividual(this)" class="quizz-individual">
-							<div class="background-individual"></div>
+              <div class="background-individual"></div>
               <img alt="Imagem de ${quizzes.data[i].title}" src="${quizzes.data[i].image}">
               <p>${quizzes.data[i].title}</p>
             </div>
             `;
+          }
         }
         
     });
