@@ -14,13 +14,8 @@ function esconderTodas() {
 }
 
 const btnQuizzIndividual= (idSelecao) => {
-    document.querySelector('.lista-quizzes').classList.add('esconder');
-    document.querySelector('.pagina-quizz').classList.remove('esconder');
-    document.querySelector('.novo-quiz').classList.add('esconder');
-    window.scrollTo(0, 0);
-
 	const id = idSelecao.getAttribute('data-id');
-	console.log(id);
+	
     oneQuizz(id);
 }
 
@@ -41,9 +36,7 @@ function getQuizzes () {
     const request = axios.get('https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes');
 
     request.then(quizzes => {
-        console.log(quizzes.data)
-        console.log(quizzes.data[0].id)
-        console.log (myQuizzes.length);
+        
         const exibirQuizzes = document.querySelector('.area-todos-quizzes');
 
         if(myQuizzes.length !== 0){
@@ -81,12 +74,17 @@ function oneQuizz (id) {
     const request = axios.get(`https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes/${id}`);
 
     request.then(infoQuizz => {
-      console.log(infoQuizz.data)
     renderQuizz(infoQuizz)});
     request.catch(error => console.log(`Unable to retrive quizzes from server, please try again later. Error: ${error.status}`));
 }
 
 function renderQuizz (infoQuizz) {
+
+  document.querySelector('.lista-quizzes').classList.add('esconder');
+    document.querySelector('.pagina-quizz').classList.remove('esconder');
+    document.querySelector('.novo-quiz').classList.add('esconder');
+    window.scrollTo(0, 0);
+
     const quizzID = infoQuizz.data.id;
 
     const container = document.querySelector('.pagina-quizz .container');
@@ -105,7 +103,7 @@ function renderQuizz (infoQuizz) {
         let conteudoRespostas = [];
 
         for(let j = 0; j < infoQuizz.data.questions[i].answers.length; j++){
-            conteudoRespostas.push(`<div onclick="trataResposta()" data-correct="${infoQuizz.data.questions[i].answers[j].isCorrectAnswer}" class="opcao-individual">
+            conteudoRespostas.push(`<div onclick="trataResposta(this)" data-correct="${infoQuizz.data.questions[i].answers[j].isCorrectAnswer}" class="opcao-individual">
             <img alt="${infoQuizz.data.questions[i].answers[j].text}" src="${infoQuizz.data.questions[i].answers[j].image}">
             <h3>${infoQuizz.data.questions[i].answers[j].text}</h3>
             </div>`)
@@ -126,10 +124,35 @@ function renderQuizz (infoQuizz) {
         container.id = quizzID;
     }
 
-function trataResposta () {
-    
-}
+    function trataResposta (clicado) {
 
+      if(clicado.classList.contains('selecionado')){
+        return;
+      }
+      if(clicado.classList.contains('locked')){
+        return;
+      }
+  
+      clicado.classList.add('selecionado');
+  
+      const parametro = clicado.innerHTML;
+  
+      const blocoRespectivo = clicado.parentNode;
+  
+      Array.from(blocoRespectivo.children).forEach(elem => {
+        if(elem.innerHTML != parametro ){
+          elem.style.opacity = "50%";
+          elem.classList.add('locked')
+        }
+        if(elem.getAttribute('data-correct') == "true"){
+          elem.children.item(1).style.color = "#009C22";
+        } else {
+          elem.children.item(1).style.color = "#FF4B4B";
+        }
+      })
+      
+  }
+  
 
 function validaInputs(inputs) {
     /* Dada uma lista de inputs, retorna true se validas. Do
@@ -387,7 +410,6 @@ window.onload = () => {
 function getQuizzesUser () {
 
   myQuizzes = JSON.parse(localStorage.getItem('quizzes'));
-  console.log(myQuizzes.length);
 
   if(myQuizzes.length !== 0){
     document.querySelector('.cria-quizz').classList.add('esconder');
@@ -398,7 +420,6 @@ function getQuizzesUser () {
   }
   
   const meusQuizzesIndividual = document.querySelector('.area-todos-quizzes-ind');
-  console.log(meusQuizzesIndividual);
 
   for (let i = 0; i < myQuizzes.length; i++){
     meusQuizzesIndividual.innerHTML += `
@@ -410,4 +431,5 @@ function getQuizzesUser () {
     `;
   }
   }
-  getQuizzesUser();
+
+  getQuizzesUser()
