@@ -5,6 +5,8 @@ const newQuizz = {
     levels: []
 }
 
+let myQuizzes;
+
 function esconderTodas() {
     const mains = document.querySelectorAll('main');
     mains.forEach((elem) => elem.classList.add('esconder'));
@@ -33,6 +35,7 @@ const btnHome = () => {
     window.location.reload();
 }
 
+// Listagem dos Quizzes - gerais e do usuário
 function getQuizzes () {
 
     const request = axios.get('https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes');
@@ -42,7 +45,6 @@ function getQuizzes () {
         console.log(quizzes.data[0].id)
         console.log (myQuizzes.length);
         const exibirQuizzes = document.querySelector('.area-todos-quizzes');
-        console.log(quizzes.data.length);
 
         if(myQuizzes.length !== 0){
           for (let j = 0; j < myQuizzes.length; j++){
@@ -103,11 +105,10 @@ function renderQuizz (infoQuizz) {
         let conteudoRespostas = [];
 
         for(let j = 0; j < infoQuizz.data.questions[i].answers.length; j++){
-            let resBlock = `<div onClick="trataResposta(this)" data-correct="${infoQuizz.data.questions[i].answers[j].isCorrectAnswer}" class="opcao-individual">
+            conteudoRespostas.push(`<div onclick="trataResposta()" data-correct="${infoQuizz.data.questions[i].answers[j].isCorrectAnswer}" class="opcao-individual">
             <img alt="${infoQuizz.data.questions[i].answers[j].text}" src="${infoQuizz.data.questions[i].answers[j].image}">
             <h3>${infoQuizz.data.questions[i].answers[j].text}</h3>
-            </div>` ;
-            conteudoRespostas.push(resBlock);
+            </div>`)
         }
 
         container.innerHTML += `
@@ -125,33 +126,7 @@ function renderQuizz (infoQuizz) {
         container.id = quizzID;
     }
 
-function trataResposta (clicado) {
-
-    if(clicado.classList.contains('selecionado')){
-      return;
-    }
-    if(clicado.classList.contains('locked')){
-      return;
-    }
-
-    clicado.classList.add('selecionado');
-
-    const parametro = clicado.innerHTML;
-
-    const blocoRespectivo = clicado.parentNode;
-
-    Array.from(blocoRespectivo.children).forEach(elem => {
-      if(elem.innerHTML != parametro ){
-        elem.style.opacity = "50%";
-        elem.classList.add('locked')
-      }
-      if(elem.getAttribute('data-correct') == "true"){
-        elem.children.item(1).style.color = "#009C22";
-      } else {
-        elem.children.item(1).style.color = "#FF4B4B";
-      }
-    })
-
+function trataResposta () {
     
 }
 
@@ -406,3 +381,33 @@ window.onload = () => {
         localStorage.setItem('quizzes', JSON.stringify([]));
     }
 }
+
+
+// Exibir quizzes do usuario
+function getQuizzesUser () {
+
+  myQuizzes = JSON.parse(localStorage.getItem('quizzes'));
+  console.log(myQuizzes.length);
+
+  if(myQuizzes.length !== 0){
+    document.querySelector('.cria-quizz').classList.add('esconder');
+    document.querySelector('.meus-quizzes').classList.remove('esconder');
+  } else {
+    document.querySelector('.cria-quizz').classList.remove('esconder');
+    document.querySelector('.meus-quizzes').classList.add('esconder');
+  }
+  
+  const meusQuizzesIndividual = document.querySelector('.area-todos-quizzes-ind');
+  console.log(meusQuizzesIndividual);
+
+  for (let i = 0; i < myQuizzes.length; i++){
+    meusQuizzesIndividual.innerHTML += `
+    <div class="quizz-individual" data-id="${myQuizzes[i].id}" onclick="btnQuizzIndividual(this)" >
+      <div class="background-individual"></div>
+      <img alt="Imagem de ${myQuizzes[i].title}" src="${myQuizzes[i].image}">
+      <p>${myQuizzes[i].title}</p>
+    </div>
+    `;
+  }
+  }
+  getQuizzesUser();
