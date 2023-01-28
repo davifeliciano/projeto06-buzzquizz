@@ -45,7 +45,7 @@ function getQuizzes () {
 
     request.then(quizzes => {
         
-        const exibirQuizzes = document.querySelector('.area-todos-quizzes');
+      const exibirQuizzes = document.querySelector('.area-todos-quizzes');
 
         if(myQuizzes.length !== 0){
           for (let j = 0; j < myQuizzes.length; j++){
@@ -72,7 +72,7 @@ function getQuizzes () {
             `;
           }
         }
-
+        
         document.querySelector('.loading').classList.add('esconder');
         document.querySelector('.lista-quizzes').classList.remove('esconder');
         
@@ -153,7 +153,6 @@ function renderQuizz (infoQuizz) {
 
     function trataResposta (clicado) {
 
-
       if(clicado.classList.contains('selecionado')){
         return;
       }
@@ -166,7 +165,7 @@ function renderQuizz (infoQuizz) {
       const parametro = clicado.innerHTML;
   
       const blocoRespectivo = clicado.parentNode;
-
+  
       console.log(blocoRespectivo);
   
       Array.from(blocoRespectivo.children).forEach(elem => {
@@ -180,7 +179,7 @@ function renderQuizz (infoQuizz) {
           elem.children.item(1).style.color = "#FF4B4B";
         }
       })
-
+      
       setTimeout(() => scrollDown(blocoRespectivo.parentNode.nextElementSibling), 2000);
 
 
@@ -231,7 +230,7 @@ function renderQuizz (infoQuizz) {
   </div>`
   
     setTimeout(() => window.scrollTo(0, document.querySelector('.pagina-quizz-individual-resultado').offsetTop - 50), 2000);
-}
+  }
   
 
 function validaInputs(inputs) {
@@ -302,29 +301,29 @@ function irParaPerguntas() {
                 <span>Precisa ter no mínimo 20 caracteres</span>
               </div>
               <div>
-                <input required type="text" class="cor-pergunta" pattern="#[a-fA-F0-9]{6}" placeholder="Cor de fundo da pergunta">
+              <input required type="text" class="cor-pergunta" pattern="#[a-fA-F0-9]{6}" placeholder="Cor de fundo da pergunta">
                 <span>Precisa ser uma cor no formato HEX (#xxxxxx)</span>
               </div>
             </div>
             <div class="form-grupo">
               <span>Reposta correta</span>
               <div>
-                <input required type="text" class="resp" placeholder="Reposta correta">
+              <input required type="text" class="resp" placeholder="Reposta correta">
                 <span>Preencha este campo</span>
               </div>
               <div>
-                <input required type="url" class="img-src-resp" placeholder="URL da imagem">
+              <input required type="url" class="img-src-resp" placeholder="URL da imagem">
                 <span>Precisa ser uma URL válida</span>
               </div>
             </div>
             <div class="form-grupo">
               <span>Repostas incorretas</span>
               <div>
-                <input required type="text" class="resp" placeholder="Reposta incorreta 1">
+              <input required type="text" class="resp" placeholder="Reposta incorreta 1">
                 <span>Preencha este campo</span>
               </div>
               <div>
-                <input required type="url" class="img-src-resp" placeholder="URL da imagem 1">
+              <input required type="url" class="img-src-resp" placeholder="URL da imagem 1">
                 <span>Precisa ser uma URL válida</span>
               </div>
             </div>
@@ -359,11 +358,11 @@ function irParaPerguntas() {
                 <span>Precisa ter no mínimo 10 caracteres</span>
               </div>
               <div>
-                <input required type="number" class="acerto-min-nivel" min="0" max="100" placeholder="% de acerto mínimo">
+              <input required type="number" class="acerto-min-nivel" min="0" max="100" placeholder="% de acerto mínimo">
                 <span>Precisa ser um valor entre 0 e 100%</span>
               </div>
               <div>
-                <input required type="url" class="img-src-nivel" placeholder="URL da imagem do nível">
+              <input required type="url" class="img-src-nivel" placeholder="URL da imagem do nível">
                 <span>Precisa ser uma URL válida</span>
               </div>
               <div>
@@ -527,6 +526,63 @@ function enviarQuizz() {
         });
 }
 
+
+window.onload = () => {
+    getQuizzes();
+
+    if (localStorage.getItem('quizzes') === null) {
+        localStorage.setItem('quizzes', JSON.stringify([]));
+    }
+}
+
+//deletar quizz
+
+function deleteQuizz(deletarQuizz) {
+  let retorno = confirm('Tem certeza de que quer excluir o Quizz?');
+  let idDeletar = deletarQuizz.getAttribute('data-id');
+  let keyDeletar = deletarQuizz.getAttribute('data-key');
+
+  const novosQuizzesUser = [];
+
+  if (retorno === true){
+    console.log(idDeletar);
+    console.log(keyDeletar);
+    console.log(myQuizzes);
+
+    const request = axios.delete(`https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes/${idDeletar}`, {headers: {"Secret-Key": keyDeletar}});
+    
+    request.then(() => {
+
+      console.log(idDeletar);
+      console.log(myQuizzes);
+      for (let i=0; i< myQuizzes.length; i++){
+        if(myQuizzes[i].id != idDeletar){
+          novosQuizzesUser.push(myQuizzes[i]);
+        };
+      }
+      console.log(novosQuizzesUser);
+      const novosQuizzesUserstr = JSON.stringify(novosQuizzesUser);
+      //localStorage.removeItem('quizzes');
+      localStorage.removeItem('quizzes');
+      localStorage.setItem('quizzes', novosQuizzesUserstr);
+
+      console.log(myQuizzes);
+
+      alert('Seu Quizz foi excluído com sucesso!')
+
+      getQuizzesUser();
+
+    });
+    request.catch(() => {
+      
+      alert('Houve um erro ao tentar excluir seu Quizz. Tente novamente mais tarde.');
+    
+    });
+  } else {
+
+  }
+}
+
 // Exibir quizzes do usuario
 function getQuizzesUser () {
 
@@ -541,17 +597,25 @@ function getQuizzesUser () {
   }
   
   const meusQuizzesIndividual = document.querySelector('.area-todos-quizzes-ind');
+  meusQuizzesIndividual.innerHTML = '';
 
   for (let i = 0; i < myQuizzes.length; i++){
     meusQuizzesIndividual.innerHTML += `
-    <div class="quizz-individual" data-id="${myQuizzes[i].id}" onclick="btnQuizzIndividual(this)" >
-      <div class="background-individual"></div>
-      <img alt="Imagem de ${myQuizzes[i].title}" src="${myQuizzes[i].image}">
-      <p>${myQuizzes[i].title}</p>
-    </div>
-    `;
+      <div class="quizz-ind-z1">
+        <div class="edit-delete">
+          <ion-icon data-id="${myQuizzes[i].id}" onclick="editQuizz(this)" name="create-outline"></ion-icon>
+          <ion-icon data-id="${myQuizzes[i].id}" data-key="${myQuizzes[i].key}" onclick="deleteQuizz(this)" name="trash-outline"></ion-icon>
+        </div>
+        <div class="quizz-individual" data-id="${myQuizzes[i].id}" onclick="btnQuizzIndividual(this)" >
+          <div class="background-individual"></div>
+          <img alt="Imagem de ${myQuizzes[i].title}" src="${myQuizzes[i].image}">
+          <p>${myQuizzes[i].title}</p>
+        </div>
+      </div>
+      `;
+    }
   }
-  }
+
 
 window.onload = () => {
     if (localStorage.getItem('quizzes') === null) {
@@ -559,5 +623,8 @@ window.onload = () => {
     }
 
     getQuizzes();
-    getQuizzesUser();
+getQuizzesUser();
 }
+
+getQuizzesUser();
+

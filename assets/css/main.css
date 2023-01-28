@@ -23,7 +23,7 @@ header {
 	position: fixed;
 	top: 0;
 	left: 0;
-	z-index: 1;
+	z-index: 2;
 }
 
 h1 {
@@ -139,7 +139,6 @@ h3 {
 	width: 340px;
 	height: 181px;
 	border-radius: 5px;
-	background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%);
 }
 
 .background-individual{
@@ -356,6 +355,35 @@ h3 {
 	left: translateY(-50%);
 }
 
+.quizz-ind-z1 {
+	width: 340px;
+	height: 181px;
+	position: relative;
+}
+
+.edit-delete {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	align-items: center;
+	position: absolute;
+	right: 0;
+	top: 10px;
+	width: 43px;
+	height: 87px;
+	background: #EC362D;
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
+	z-index: 1;
+}
+
+.edit-delete ion-icon {
+	font-size: 20px;
+	--ionicon-stroke-width: 40px;
+	color: #FFFFFF;
+	cursor: pointer;
+}
+
 @media (max-width: 1100px) {
 	.lista-quizzes .container {
 		width: 90%;
@@ -438,7 +466,13 @@ h3 {
 
 	.background-individual {
 		width: 100%;
-		}
+	}
+
+	.quizz-ind-z1 {
+		width: 100%;
+		height: auto;
+		position: relative;
+	}
 
 }
 /* Seção de novo quiz */
