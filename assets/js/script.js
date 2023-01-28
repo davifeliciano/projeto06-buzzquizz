@@ -1,4 +1,4 @@
-const newQuizz = {
+let newQuizz = {
     title: "",
     image: "",
     questions: [],
@@ -47,29 +47,21 @@ function getQuizzes () {
         
       const exibirQuizzes = document.querySelector('.area-todos-quizzes');
 
-        if(myQuizzes.length !== 0){
-          for (let j = 0; j < myQuizzes.length; j++){
-            for (let i = 0; i < quizzes.data.length; i++){
-              if (myQuizzes[j].id !== quizzes.data[i].id){
-              exibirQuizzes.innerHTML += `
-              <div data-id="${quizzes.data[i].id}" onclick="btnQuizzIndividual(this)" class="quizz-individual">
-                <div class="background-individual"></div>
-                <img alt="Imagem de ${quizzes.data[i].title}" src="${quizzes.data[i].image}">
-                <p>${quizzes.data[i].title}</p>
-              </div>
-              `;
-              }
-            }
-          }
-        } else {
           for (let i = 0; i < quizzes.data.length; i++){
             exibirQuizzes.innerHTML += `
-            <div data-id="${quizzes.data[i].id}" onclick="btnQuizzIndividual(this)" class="quizz-individual">
+            <div data-id="${quizzes.data[i].id}" data-parent="geral" onclick="btnQuizzIndividual(this)" class="quizz-individual">
               <div class="background-individual"></div>
               <img alt="Imagem de ${quizzes.data[i].title}" src="${quizzes.data[i].image}">
               <p>${quizzes.data[i].title}</p>
             </div>
             `;
+            for (let j = 0; j < myQuizzes.length; j++){
+              if (myQuizzes[j].id == quizzes.data[i].id){
+                console.log(myQuizzes[j].id);
+                console.log(quizzes.data[i].id);
+                
+                document.querySelector('.quizz-individual[data-id="'+myQuizzes[j].id+'"][data-parent="geral"]').classList.add('esconder');
+            }
           }
         }
         
@@ -600,7 +592,7 @@ function getQuizzesUser () {
   meusQuizzesIndividual.innerHTML = '';
 
   for (let i = 0; i < myQuizzes.length; i++){
-    meusQuizzesIndividual.innerHTML += `
+    meusQuizzesIndividual.innerHTML = `
       <div class="quizz-ind-z1">
         <div class="edit-delete">
           <ion-icon data-id="${myQuizzes[i].id}" onclick="editQuizz(this)" name="create-outline"></ion-icon>
@@ -612,7 +604,7 @@ function getQuizzesUser () {
           <p>${myQuizzes[i].title}</p>
         </div>
       </div>
-      `;
+      `+ meusQuizzesIndividual.innerHTML;
     }
   }
 
