@@ -5,6 +5,9 @@ let newQuizz = {
   levels: [],
 };
 
+// Quizz atualmente em edição
+let editingQuizz = null;
+
 let myQuizzes;
 
 //variáveis da finalização do quizz
@@ -261,6 +264,27 @@ function unfoldFormCard() {
   window.scrollTo(0, formCard.offsetTop - 75);
 }
 
+function editarQuizz(quizzId) {
+  /* Função chamada ao clicar no botão de edição de um
+  dos quizzes do usuário */
+  console.log(quizzId);
+  const quizz = JSON.parse(localStorage.getItem("quizzes")).find(
+    (quizz) => quizz.id === parseInt(quizzId)
+  );
+  editingQuizz = quizz;
+
+  const telaDeInfoBase = document.querySelector("#info-base");
+  const [titleInput, imageInput, perguntasInput, niveisInput] =
+    telaDeInfoBase.querySelectorAll("input");
+
+  titleInput.value = quizz.title;
+  imageInput.value = quizz.image;
+  perguntasInput.value = quizz.questions.length;
+  niveisInput.value = quizz.levels.length;
+
+  btnCriarQuizz();
+}
+
 function irParaPerguntas() {
   /* Checa as informações basicas em #info-base. Se forem validas,
   popula novoQuiz, #perguntas e #niveis e exibe #perguntas */
@@ -383,6 +407,47 @@ function irParaPerguntas() {
     .querySelectorAll(":is(#perguntas, #niveis) .form-card:first-of-type")
     .forEach((elem) => elem.classList.remove("fold"));
 
+  /* Caso um quiz esteja em edição, popula os forms */
+  if (editingQuizz !== null) {
+    const cardsDePerguntas = telaDePerguntas.querySelectorAll(".form-card");
+    const cardsDeNiveis = telaDeNiveis.querySelectorAll(".form-card");
+
+    for (let i = 0; i < cardsDePerguntas.length; i++) {
+      const question = editingQuizz.questions[i];
+
+      if (question !== undefined) {
+        const [titleInput, colorInput, ...answerInputs] =
+          cardsDePerguntas[i].querySelectorAll("input");
+
+        titleInput.value = question.title;
+        colorInput.value = question.color;
+
+        const answerValues = [];
+        for (const answer of question.answers) {
+          answerValues.push(answer.text, answer.image);
+        }
+
+        answerValues.forEach((value, i) => {
+          answerInputs[i].value = value;
+        });
+      }
+    }
+
+    for (let i = 0; i < cardsDeNiveis.length; i++) {
+      const level = editingQuizz.levels[i];
+
+      if (level !== undefined) {
+        const [titleInput, minPercentInput, imageInput, descInput] =
+          cardsDeNiveis[i].querySelectorAll("input");
+
+        titleInput.value = level.title;
+        minPercentInput.value = level.minValue;
+        imageInput.value = level.image;
+        descInput.value = level.text;
+      }
+    }
+  }
+
   esconderTodas();
   telaDePerguntas.classList.remove("esconder");
 }
@@ -440,6 +505,43 @@ function irParaNiveis() {
   telaDeNiveis.classList.remove("esconder");
 }
 
+function successCallback(response) {
+  document.querySelector(".loading").classList.add("esconder");
+  let quizzes = JSON.parse(localStorage.getItem("quizzes"));
+
+  if (editingQuizz !== null) {
+    quizzes = quizzes.filter((quizz) => quizz.id !== editingQuizz.id);
+  }
+
+  quizzes.push(response.data);
+  const quizzesStr = JSON.stringify(quizzes);
+  localStorage.setItem("quizzes", quizzesStr);
+
+  // Em caso de sucesso, popula e mostra #fim-novo-quiz
+  const telaFinal = document.querySelector("#fim-novo-quizz");
+  telaFinal.innerHTML += `
+          <div class="quizz-individual-container">
+            <div class="quizz-individual">
+              <img src="${newQuizz.image}" alt="Imagem Quizz ${response.data.id}">
+              <p>${newQuizz.title}</p>
+            </div>
+          </div>
+          <button class="btn-prosseguir" onclick="oneQuizz(${response.data.id});">Acessar Quiz</button>
+          <button class="btn-home" onclick="btnHome();">Voltar para home</button>
+        `;
+
+  // Reseta objeto newQuizz
+  newQuizz = {
+    title: "",
+    image: "",
+    questions: [],
+    levels: [],
+  };
+
+  esconderTodas();
+  telaFinal.classList.remove("esconder");
+}
+
 function enviarQuizz() {
   /* Checa os niveis em #niveis. Se forem validas, realiza o
   post na API, guarda novoQuizz no localStorage e exibe #fim-novo-quizz */
@@ -482,42 +584,27 @@ function enviarQuizz() {
   // Postando o Quizz na API
   const url = "https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes";
 
+  if (editingQuizz !== null) {
+    return axios
+      .put(`${url}/${editingQuizz.id}`, newQuizz, {
+        headers: { "Secret-Key": editingQuizz.key },
+      })
+      .then(successCallback)
+      .catch((error) => {
+        document.querySelector(".loading").classList.add("esconder");
+        telaDeNiveis.classList.remove("esconder");
+        console.log(error);
+        alert("Unable to put quizzes to server, please try again later.");
+      });
+  }
+
   return axios
     .post(url, newQuizz)
-    .then((response) => {
-      document.querySelector(".loading").classList.add("esconder");
-      const quizzes = JSON.parse(localStorage.getItem("quizzes"));
-      quizzes.push(response.data);
-      const quizzesStr = JSON.stringify(quizzes);
-      localStorage.setItem("quizzes", quizzesStr);
-
-      // Em caso de sucesso, popula e mostra #fim-novo-quiz
-      const telaFinal = document.querySelector("#fim-novo-quizz");
-      telaFinal.innerHTML += `
-              <div class="quizz-individual-container">
-                <div class="quizz-individual">
-                  <img src="${newQuizz.image}" alt="Imagem Quizz ${response.data.id}">
-                  <p>${newQuizz.title}</p>
-                </div>
-              </div>
-              <button class="btn-prosseguir" onclick="oneQuizz(${response.data.id});">Acessar Quiz</button>
-              <button class="btn-home" onclick="btnHome();">Voltar para home</button>
-            `;
-
-      // Reseta objeto newQuizz
-      newQuizz = {
-        title: "",
-        image: "",
-        questions: [],
-        levels: [],
-      };
-
-      esconderTodas();
-      telaFinal.classList.remove("esconder");
-    })
+    .then(successCallback)
     .catch((error) => {
       document.querySelector(".loading").classList.add("esconder");
       telaDeNiveis.classList.remove("esconder");
+      console.log(error);
       alert("Unable to post quizzes to server, please try again later.");
     });
 }
@@ -582,7 +669,7 @@ function getQuizzesUser() {
       `
           <div class="quizz-ind-z1">
             <div class="edit-delete">
-              <ion-icon data-id="${myQuizzes[i].id}" onclick="editQuizz(this)" name="create-outline"></ion-icon>
+              <ion-icon data-id="${myQuizzes[i].id}" onclick="editarQuizz(this.dataset.id)" name="create-outline"></ion-icon>
               <ion-icon data-id="${myQuizzes[i].id}" data-key="${myQuizzes[i].key}" onclick="deleteQuizz(this)" name="trash-outline"></ion-icon>
             </div>
             <div class="quizz-individual" data-id="${myQuizzes[i].id}" onclick="btnQuizzIndividual(this)" >
